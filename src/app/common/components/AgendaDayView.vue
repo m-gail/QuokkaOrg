@@ -3,7 +3,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.vue'
 import Card from '@/components/Card.vue'
 import List from '@/components/List.vue';
 import ListItem from '@/components/ListItem.vue'
-import type { AgendaDay } from '@/org/parser/agenda'
+import type { AgendaDay } from '@/org/parser/types';
 
 const { day } = defineProps<{ day: AgendaDay }>()
 </script>

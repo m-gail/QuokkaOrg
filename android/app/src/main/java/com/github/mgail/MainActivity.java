@@ -1,5 +1,6 @@
 package com.github.mgail;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.getcapacitor.BridgeActivity;

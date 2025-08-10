@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DirectoryPicker } from '@/files/directoryPicker'
+import { DirectoryPicker } from './directoryPicker'
 
 const { label, value } = defineProps<{ label: string; value: string }>()
 const emit = defineEmits<{ change: [value: string] }>()

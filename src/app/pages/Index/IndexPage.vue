@@ -8,6 +8,6 @@ const settings = useSettingsStore()
 if (settings.directoryPath === '') {
   router.push('/settings')
 } else {
-  router.push('/agenda')
+  router.push('/upcoming')
 }
 </script>

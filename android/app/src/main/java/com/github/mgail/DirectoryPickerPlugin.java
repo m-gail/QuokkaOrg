@@ -34,6 +34,8 @@ public class DirectoryPickerPlugin extends Plugin {
     public void pickDirectory(PluginCall call) {
         Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         i.addCategory(Intent.CATEGORY_DEFAULT);
+        i.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(call, i, "pickDirectoryResult");
     }
 
@@ -93,6 +95,9 @@ public class DirectoryPickerPlugin extends Plugin {
         if (call == null) {
             return;
         }
+
+        var uri = result.getData().getData();
+        getActivity().getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         String path = result.getData().getData().toString();
         JSObject directory = new JSObject();

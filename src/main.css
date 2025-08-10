@@ -1,2 +1,4 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@source inline("gap-{0..10}");

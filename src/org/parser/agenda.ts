@@ -1,87 +1,63 @@
-import { Parser, Language, Node } from 'web-tree-sitter'
+import { parseSingleFile } from "./singleFile"
+import type { AgendaDay, Agenda, AgendaEvent } from "./types"
 
-export type Agenda = {
-  days: AgendaDay[]
-}
+export type OrgFile = () => Promise<string>
 
-export type AgendaDay = {
-  date: string
-  events: AgendaEvent[]
-}
+export type AgendaFilter = (event: AgendaDay) => boolean
 
-export type AgendaEvent = {
-  time?: string
-  file: string
-  breadcrumbs: string[]
-}
+export async function buildAgenda(files: OrgFile[], filter?: AgendaFilter): Promise<Agenda> {
+  let fullAgenda: Agenda = { days: [] }
 
-export async function parseAgenda(content: string): Promise<Agenda> {
-  const parser = await createOrgParser()
-  const tree = parser.parse(content)
-
-  if (tree == null) {
-    throw new Error()
+  for (const file of files) {
+    const content = await file()
+    const currentFileAgenda = await parseSingleFile(content)
+    fullAgenda = merge(fullAgenda, currentFileAgenda)
   }
 
-  const timestampNodes = tree.rootNode.descendantsOfType('timestamp')
-  const days = new Map<string, AgendaDay>()
-  for (const timestampNode of timestampNodes) {
-    if (timestampNode == null) {
-      continue
-    }
-    const date = getDate(timestampNode)
-    if (date == null) {
-      continue
-    }
-    if (!days.has(date)) {
-      days.set(date, { date, events: [] })
-    }
-    const agendaDay = days.get(date)
-    agendaDay?.events.push({
-      time: getTime(timestampNode),
-      file: 'unknown',
-      breadcrumbs: getBreadcrumbs(timestampNode),
-    })
+  for (const day of fullAgenda.days) {
+    day.events.sort(compareEvents)
   }
 
-  return { days: [...days.values()] }
+  fullAgenda.days.sort(compareDays)
+  fullAgenda.days = fullAgenda.days.filter((day) => filter?.(day) ?? true)
+
+  return fullAgenda
 }
 
-function getDate(timestampNode: Node) {
-  return timestampNode.descendantsOfType('date')[0]?.text
+function compareDays(d1: AgendaDay, d2: AgendaDay): number {
+  return d1.date.localeCompare(d2.date)
 }
 
-function getTime(timestampNode: Node) {
-  return timestampNode.descendantsOfType('time')[0]?.text
+function compareEvents(e1: AgendaEvent, e2: AgendaEvent): number {
+  const time1 = e1.time ?? ''
+  const time2 = e2.time ?? ''
+
+  return time1.localeCompare(time2)
 }
 
-function getBreadcrumbs(timestampNode: Node) {
-  let current = timestampNode
-  const breadcrumbs = []
+function merge(fullAgenda: Agenda, addedAgenda: Agenda): Agenda {
+  const newDays = addedAgenda.days.filter((day) => !hasDate(fullAgenda, day.date))
 
-  while (current.parent !== null) {
-    const element = current.parent
-    if (element.type === 'section') {
-      const title = getTitle(element)
-      if (title !== undefined) {
-        breadcrumbs.unshift(title)
-      }
-    }
-    current = current.parent
+  const existingDaysMerged: AgendaDay[] = fullAgenda.days.map((day) => ({
+    date: day.date,
+    events: [...day.events, ...getEvents(addedAgenda, day.date)],
+  }))
+
+  return { days: [...existingDaysMerged, ...newDays] }
+}
+
+function getEvents(agenda: Agenda, date: string): AgendaEvent[] {
+  const day = getAgendaDay(agenda.days, date)
+  if (day === undefined) {
+    return []
   }
-  return breadcrumbs
+  return day.events
 }
 
-function getTitle(section: Node): string | undefined {
-  return section.descendantsOfType('headline')[0]?.descendantsOfType('item')[0]?.text
+function hasDate(agenda: Agenda, date: string): boolean {
+  return getAgendaDay(agenda.days, date) !== undefined
 }
 
-async function createOrgParser(): Promise<Parser> {
-  await Parser.init({
-    locateFile: () => '/tree-sitter.wasm',
-  })
-  const parser = new Parser()
-  const Org = await Language.load('tree-sitter-org.wasm')
-  parser.setLanguage(Org)
-  return parser
+function getAgendaDay(days: AgendaDay[], date: string): AgendaDay | undefined {
+  return days.filter((day) => day.date === date)[0]
 }
