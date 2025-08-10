@@ -67,7 +67,7 @@ async function createOrgParser(): Promise<Parser> {
     locateFile: () => '/tree-sitter.wasm',
   })
   const parser = new Parser()
-  const Org = await Language.load('tree-sitter-org.wasm')
+  const Org = await Language.load('/tree-sitter-org.wasm')
   parser.setLanguage(Org)
   return parser
 }

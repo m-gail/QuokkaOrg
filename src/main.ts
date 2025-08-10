@@ -3,6 +3,7 @@ import router from './app/router'
 import App from './app/App.vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
+import "cally"
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedState)
