@@ -6,4 +6,10 @@ type SettingsStore = {
 
 export const useSettingsStore = defineStore('settings', {
   state: () => ({ directoryPath: '' }) as SettingsStore,
+  actions: {
+    setDirectoryPath(path: string) {
+      this.directoryPath = path
+    },
+  },
+  persist: true,
 })
