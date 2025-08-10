@@ -17,6 +17,8 @@
     "postinstall": "cp node_modules/web-tree-sitter/tree-sitter.wasm public"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.2",
+    "@capacitor/core": "^7.4.2",
     "@tailwindcss/vite": "^4.1.11",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",
@@ -26,6 +28,7 @@
     "web-tree-sitter": "^0.25.8"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7.4.2",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.16.5",
     "@vitejs/plugin-vue": "^6.0.1",
