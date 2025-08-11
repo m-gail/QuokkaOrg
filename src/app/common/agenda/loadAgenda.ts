@@ -19,4 +19,3 @@ export async function loadAgenda(directory: string, filter?: AgendaFilter): Prom
 
   return buildAgenda(files, filter)
 }
-

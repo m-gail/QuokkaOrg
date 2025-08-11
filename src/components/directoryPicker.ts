@@ -1,23 +1,24 @@
-import { registerPlugin } from "@capacitor/core";
+import { registerPlugin } from '@capacitor/core'
 
 export interface File {
-  path: string;
-  name: string;
+  path: string
+  name: string
 }
 
 export interface FilePath {
-  path: string;
+  path: string
 }
 
 export interface FileContent {
-  content: string;
+  content: string
 }
 
 export interface DirectoryPickerPlugin {
-  pickDirectory(): Promise<FilePath>;
-  listDirectory(options: FilePath): Promise<{ files: File[] }>;
-  readFile(options: FilePath): Promise<FileContent>;
+  pickDirectory(): Promise<FilePath>
+  listDirectory(options: FilePath): Promise<{ files: File[] }>
+  readFile(options: FilePath): Promise<FileContent>
 }
 
-export const DirectoryPicker =
-  registerPlugin<DirectoryPickerPlugin>("DirectoryPicker");
+export const DirectoryPicker = registerPlugin<DirectoryPickerPlugin>('DirectoryPicker', {
+  web: import('@/plugins/directory-picker/web').then((m) => new m.WebDirectoryPicker()),
+})
