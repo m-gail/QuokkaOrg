@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { loadAgenda } from '@/app/common/agenda/loadAgenda'
 import AgendaView from '@/app/common/components/AgendaView.vue'
-import { getDateRange } from '@/app/common/date'
+import { formatDate, formatDateWithWeekDay, getDateRange } from '@/app/common/date'
 import { useSettingsStore } from '@/app/store/settings'
 import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
@@ -34,7 +34,7 @@ onMounted(async () => {
     <LoadingSpinner />
   </CenterStack>
   <Flex col gap="4" v-else class="p-4">
-    <div class="text-center py-2 text-lg font-bold">{{ date.toLocaleDateString() }}</div>
+    <div class="text-center py-2 text-lg font-bold">{{ formatDateWithWeekDay(date) }}</div>
     <AgendaView :agenda="agenda" />
   </Flex>
 </template>
