@@ -10,4 +10,4 @@ The Upcoming tab will display the events coming up in the next 21 days. On the c
 
 ## Screenshots
 
-![Upcoming Page](./github/UpcomingView.png) ![Calendar Page](./github/CalendarView.png)
+![Upcoming Page](./.github/UpcomingView.png) ![Calendar Page](./.github/CalendarView.png)
