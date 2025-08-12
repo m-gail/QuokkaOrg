@@ -38,7 +38,7 @@ function getDate(timestampNode: Node) {
 }
 
 function getTime(timestampNode: Node) {
-  return timestampNode.descendantsOfType('time')[0]?.text
+  return timestampNode.descendantsOfType('time')[0]?.text ?? timestampNode.descendantsOfType('duration')[0]?.text
 }
 
 function getBreadcrumbs(timestampNode: Node) {
