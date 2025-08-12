@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { loadAgenda } from '@/app/common/agenda/loadAgenda'
 import AgendaEventsList from '@/app/common/components/AgendaEventsList.vue'
-import AgendaView from '@/app/common/components/AgendaView.vue'
 import { formatDateWithWeekDay, getDateRange } from '@/app/common/date'
 import { useSettingsStore } from '@/app/store/settings'
 import CenterStack from '@/components/CenterStack.vue'
@@ -9,7 +8,7 @@ import Flex from '@/components/Flex.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import Text from '@/components/Text.vue'
 import type { Agenda } from '@/org/parser/types'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const settings = useSettingsStore()
@@ -17,6 +16,7 @@ const route = useRoute()
 const date = new Date(Date.parse(route.params.date as string))
 
 const agenda = ref<Agenda | undefined>(undefined)
+const events = computed(() => agenda.value?.days[0]?.events ?? [])
 
 onMounted(async () => {
   const [rangeStart, rangeEnd] = getDateRange(date, 1)
@@ -37,6 +37,7 @@ onMounted(async () => {
   </CenterStack>
   <Flex col gap="4" v-else class="p-4">
     <Text center weight="bold" class="py-2" size="lg">{{ formatDateWithWeekDay(date) }}</Text>
-    <AgendaEventsList :events="agenda.days[0].events" />
+    <AgendaEventsList :events="events" v-if="events.length > 0" />
+    <Text v-else center>No events scheduled for this day</Text>
   </Flex>
 </template>

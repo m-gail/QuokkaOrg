@@ -6,6 +6,7 @@ import { useSettingsStore } from '@/app/store/settings'
 import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import Text from '@/components/Text.vue'
 import type { Agenda } from '@/org/parser/types'
 import { onMounted, ref } from 'vue'
 
@@ -34,6 +35,7 @@ onMounted(async () => {
   </CenterStack>
   <Flex col gap="4" v-else class="p-4">
     <div class="text-center py-2 text-lg font-bold">{{ formatDate(startDate) }} - {{ formatDate(endDate) }}</div>
-    <AgendaView :agenda="agenda" />
+    <AgendaView :agenda="agenda" v-if="agenda.days.length > 0" />
+    <Text v-else center>No upcoming events</Text>
   </Flex>
 </template>
