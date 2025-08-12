@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { cls } from '@/app/common/classes'
 import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{ col?: boolean; class?: string; gap?: string }>(), {
@@ -6,14 +7,12 @@ const props = withDefaults(defineProps<{ col?: boolean; class?: string; gap?: st
   gap: '0',
 })
 
-const cls = computed(() =>
-  ['flex', props.col ? 'flex-col' : 'flex-row', `gap-${props.gap}`, props.class]
-    .filter((it) => it != null)
-    .join(' '),
+const classes = computed(() =>
+  cls(['flex', props.col ? 'flex-col' : 'flex-row', `gap-${props.gap}`, props.class]),
 )
 </script>
 <template>
-  <div :class="cls">
+  <div :class="classes">
     <slot />
   </div>
 </template>

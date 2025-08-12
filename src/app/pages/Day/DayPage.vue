@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { loadAgenda } from '@/app/common/agenda/loadAgenda'
+import AgendaEventsList from '@/app/common/components/AgendaEventsList.vue'
 import AgendaView from '@/app/common/components/AgendaView.vue'
-import { formatDate, formatDateWithWeekDay, getDateRange } from '@/app/common/date'
+import { formatDateWithWeekDay, getDateRange } from '@/app/common/date'
 import { useSettingsStore } from '@/app/store/settings'
 import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import Text from '@/components/Text.vue'
 import type { Agenda } from '@/org/parser/types'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -34,7 +36,7 @@ onMounted(async () => {
     <LoadingSpinner />
   </CenterStack>
   <Flex col gap="4" v-else class="p-4">
-    <div class="text-center py-2 text-lg font-bold">{{ formatDateWithWeekDay(date) }}</div>
-    <AgendaView :agenda="agenda" />
+    <Text center weight="bold" class="py-2" size="lg">{{ formatDateWithWeekDay(date) }}</Text>
+    <AgendaEventsList :events="agenda.days[0].events" />
   </Flex>
 </template>

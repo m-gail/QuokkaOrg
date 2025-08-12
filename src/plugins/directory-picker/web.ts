@@ -26,6 +26,10 @@ export class WebDirectoryPicker extends WebPlugin implements DirectoryPickerPlug
 * Uni
 ** Algorithms and Datastructures Test
 <2025-08-12 Wed 15:00>
+** Analysis Test
+<2025-08-12 Wed 16:00>
+** Security Test
+<2025-08-12 Wed 17:00>
 ** Theoretical Informatics Lecture
 <2025-08-13 Wed 15:00>
 * Private
