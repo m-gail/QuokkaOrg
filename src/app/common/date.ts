@@ -7,6 +7,18 @@ export function getDateRange(startDate: Date, numberOfDays: number): [Date, Date
   return [rangeStart, rangeEnd]
 }
 
+export function getNextDay(date: Date) {
+  const nextDay = new Date(date)
+  nextDay.setDate(nextDay.getDate() + 1)
+  return nextDay
+}
+
+export function getPreviousDay(date: Date) {
+  const previousDay = new Date(date)
+  previousDay.setDate(previousDay.getDate() - 1)
+  return previousDay
+}
+
 const weekdayFormatter = Intl.DateTimeFormat(undefined, {
   weekday: 'long',
   day: 'numeric',
@@ -26,4 +38,8 @@ export function formatDateWithWeekDay(date: Date) {
 
 export function formatDate(date: Date) {
   return formatter.format(date)
+}
+
+export function formatIsoDate(date: Date) {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0]
 }

@@ -7,6 +7,7 @@ import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import Text from '@/components/Text.vue'
+import { rangeFilter } from '@/org/parser/filters'
 import type { Agenda } from '@/org/parser/types'
 import { onMounted, ref } from 'vue'
 
@@ -20,10 +21,10 @@ onMounted(async () => {
   [startDate.value, endDate.value] = getDateRange(new Date(), 21)
 
   if (settings.directoryPath !== '') {
-    agenda.value = await loadAgenda(settings.directoryPath, (day) => {
-      const date = new Date(Date.parse(day.date))
-      return date >= startDate.value && date <= endDate.value
-    })
+    agenda.value = await loadAgenda(
+      settings.directoryPath,
+      rangeFilter(startDate.value, endDate.value),
+    )
   }
 })
 </script>
@@ -34,7 +35,9 @@ onMounted(async () => {
     <LoadingSpinner />
   </CenterStack>
   <Flex col gap="4" v-else class="p-4">
-    <div class="text-center py-2 text-lg font-bold">{{ formatDate(startDate) }} - {{ formatDate(endDate) }}</div>
+    <div class="text-center py-2 text-lg font-bold">
+      {{ formatDate(startDate) }} - {{ formatDate(endDate) }}
+    </div>
     <AgendaView :agenda="agenda" v-if="agenda.days.length > 0" />
     <Text v-else center>No upcoming events</Text>
   </Flex>
