@@ -43,7 +43,9 @@ public class DirectoryPickerPlugin extends Plugin {
         JSObject ret = new JSObject();
         ret.put("files", new JSArray(files.stream().map(file -> {
             JSObject jsFile = new JSObject();
-            jsFile.put("path", file.path());
+            jsFile.put("absolutePath", file.absolutePath());
+            jsFile.put("relativePath", file.relativePath());
+            jsFile.put("lastModified", file.lastModified());
             jsFile.put("name", file.name());
             return jsFile;
         }).collect(Collectors.toList())));
@@ -67,28 +69,44 @@ public class DirectoryPickerPlugin extends Plugin {
         ContentResolver contentResolver = getContext().getContentResolver();
         Uri rootContentUri = Uri.parse(path);
         Uri rootChildrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(rootContentUri, DocumentsContract.getTreeDocumentId(rootContentUri));
-        Queue<Uri> directoryQueue = new LinkedList<>();
-        directoryQueue.add(rootChildrenUri);
+        Queue<RecursiveQueueItem> directoryQueue = new LinkedList<>();
+        directoryQueue.add(new RecursiveQueueItem("", rootChildrenUri));
         List<File> files = new LinkedList<>();
         while (!directoryQueue.isEmpty()) {
-            Uri childrenUri = directoryQueue.poll();
-            try (Cursor cursor = contentResolver.query(childrenUri, new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME, DocumentsContract.Document.COLUMN_MIME_TYPE}, null, null, null)) {
+            RecursiveQueueItem currentItem = directoryQueue.poll();
+            Uri childrenUri = currentItem.uri();
+            try (Cursor cursor = contentResolver.query(
+                    childrenUri,
+                    new String[]{
+                            DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                            DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                            DocumentsContract.Document.COLUMN_MIME_TYPE,
+                            DocumentsContract.Document.COLUMN_LAST_MODIFIED},
+                    null, null, null)) {
                 while (cursor.moveToNext()) {
                     String documentId = cursor.getString(0);
                     String name = cursor.getString(1);
                     String mimeType = cursor.getString(2);
+                    long lastModified = cursor.getLong(3);
                     if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
                         if (name.equals(".stversions")) { // syncthing folder
                             continue;
                         }
-                        directoryQueue.add(DocumentsContract.buildChildDocumentsUriUsingTree(rootContentUri, documentId));
+                        directoryQueue.add(new RecursiveQueueItem(addToRelativePath(currentItem.relativePath(), name), DocumentsContract.buildChildDocumentsUriUsingTree(rootContentUri, documentId)));
                     } else if (name.endsWith(".org")) {
-                        files.add(new File(DocumentsContract.buildDocumentUriUsingTree(rootContentUri, documentId).toString(), name));
+                        files.add(new File(DocumentsContract.buildDocumentUriUsingTree(rootContentUri, documentId).toString(), addToRelativePath(currentItem.relativePath(), name), name, lastModified));
                     }
                 }
             }
         }
         return files;
+    }
+
+    private String addToRelativePath(String original, String toAdd) {
+        if (original.equals("")) {
+            return toAdd;
+        }
+        return original + "/" + toAdd;
     }
 
     @ActivityCallback

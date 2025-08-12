@@ -1,7 +1,9 @@
 import { registerPlugin } from '@capacitor/core'
 
 export interface File {
-  path: string
+  absolutePath: string
+  relativePath: string
+  lastModified: number
   name: string
 }
 

@@ -10,9 +10,8 @@ export async function loadAgenda(directory: string, filter?: AgendaFilter): Prom
   const files = listDirResult.files
     .filter((file) => file.name.endsWith('.org'))
     .map((file) => async () => {
-      console.log('reading ', file)
       const result = await DirectoryPicker.readFile({
-        path: file.path,
+        path: file.absolutePath,
       })
       return result.content
     })

@@ -17,7 +17,7 @@ export class WebDirectoryPicker extends WebPlugin implements DirectoryPickerPlug
     return { path: '/unknown' }
   }
   async listDirectory(): Promise<{ files: File[] }> {
-    return { files: [{ path: '/unknown/index.org', name: 'index.org' }] }
+    return { files: [{ absolutePath: '/unknown/index.org', relativePath: 'index.org', name: 'index.org', lastModified: 0 }] }
   }
   async readFile(filePath: FilePath): Promise<FileContent> {
     if (filePath.path === '/unknown/index.org') {
