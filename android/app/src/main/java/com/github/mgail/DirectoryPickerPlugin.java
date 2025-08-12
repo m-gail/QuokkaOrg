@@ -18,9 +18,7 @@ import com.getcapacitor.annotation.ActivityCallback;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,12 +72,15 @@ public class DirectoryPickerPlugin extends Plugin {
         List<File> files = new LinkedList<>();
         while (!directoryQueue.isEmpty()) {
             Uri childrenUri = directoryQueue.poll();
-            try (Cursor cursor = contentResolver.query(childrenUri,new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME, DocumentsContract.Document.COLUMN_MIME_TYPE}, null, null, null)) {
+            try (Cursor cursor = contentResolver.query(childrenUri, new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME, DocumentsContract.Document.COLUMN_MIME_TYPE}, null, null, null)) {
                 while (cursor.moveToNext()) {
                     String documentId = cursor.getString(0);
                     String name = cursor.getString(1);
                     String mimeType = cursor.getString(2);
                     if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
+                        if (name.equals(".stversions")) { // syncthing folder
+                            continue;
+                        }
                         directoryQueue.add(DocumentsContract.buildChildDocumentsUriUsingTree(rootContentUri, documentId));
                     } else if (name.endsWith(".org")) {
                         files.add(new File(DocumentsContract.buildDocumentUriUsingTree(rootContentUri, documentId).toString(), name));

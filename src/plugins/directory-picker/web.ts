@@ -23,20 +23,23 @@ export class WebDirectoryPicker extends WebPlugin implements DirectoryPickerPlug
     if (filePath.path === '/unknown/index.org') {
       return {
         content: `
-** Übung 1
-<2025-08-10 Wed 15:00>
-** Übung 2
-<2025-08-07 Wed 15:00>
-** Übung 3
-<2025-08-09 Wed 15:00>
-** Übung 4
-<2025-08-24 Wed 15:00>
-** Übung 5
-<2025-08-30 Wed 15:00>
-** Übung 6
-<2025-08-31 Wed 15:00>
-** Übung 7
-<2025-09-01 Wed 15:00>
+* Uni
+** Algorithms and Datastructures Test
+<2025-08-12 Wed 15:00>
+** Theoretical Informatics Lecture
+<2025-08-13 Wed 15:00>
+* Private
+** Cinema
+<2025-08-15 Wed 15:00>
+** Cycling Race
+<2025-09-02 Wed 15:00>
+** Marathon
+<2025-09-03 Wed 15:00>
+* Work
+** Sprint Review
+<2025-09-04 Wed 15:00>
+** Sprint Retro
+<2025-09-05 Wed 15:00>
 `,
       }
     } else {

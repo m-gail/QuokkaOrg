@@ -1,39 +1,13 @@
-# OrgMobile
+# QuokkaOrg
 
-This template should help get you started developing with Vue 3 in Vite.
+QuokkaOrg is a mobile agenda-viewer for your org-mode files.
 
-## Recommended IDE Setup
+## Usage
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+First choose the directory, that contains your org files on the settings tab. QuokkaOrg will scan all org-files in this directory and collect all timestamp contained in them for you to view.
 
-## Type Support for `.vue` Imports in TS
+The Upcoming tab will display the events coming up in the next 21 days. On the calendar tab you can view the scheduled appointments for any day.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Screenshots
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+![Upcoming Page](./github/UpcomingView.png) ![Calendar Page](./github/CalendarView.png)
