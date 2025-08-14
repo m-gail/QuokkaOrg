@@ -1,12 +1,8 @@
-import type { File, FilePath } from '@/components/directoryPicker'
-import { mergeAgendas } from '@/org/parser/agenda'
-import { parseSingleFile } from '@/org/parser/singleFile'
-import type { Agenda } from '@/org/parser/types'
-
-export type AgendaCache = {
-  knownFiles: File[]
-  cachedAgenda: Agenda
-}
+import type { File, FilePath } from "@/components/directoryPicker"
+import { mergeAgendas } from "@/org/merge"
+import { parseSingleFile } from "@/org/parser"
+import type { Agenda } from "@/org/types"
+import type { AgendaCache } from "./types"
 
 export async function updateCache(
   cache: AgendaCache,
@@ -65,8 +61,6 @@ function evict(file: File, cache: AgendaCache): AgendaCache {
   return { cachedAgenda: agenda, knownFiles }
 }
 
-function evictRemovedFiles(): AgendaCache { }
-
 async function addFileToCache(
   file: File,
   cache: AgendaCache,
@@ -79,8 +73,4 @@ async function addFileToCache(
     knownFiles: [...cache.knownFiles, file],
     cachedAgenda: mergeAgendas(cache.cachedAgenda, parsedAgenda),
   }
-}
-
-export function getDefaultCache(): AgendaCache {
-  return { knownFiles: [], cachedAgenda: { days: [] } }
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Card from '@/components/Card.vue'
-import type { AgendaDay } from '@/org/parser/types'
+import type { AgendaDay } from '@/org/types'
 import { formatDateWithWeekDay } from '../date'
 import AgendaEventsList from './AgendaEventsList.vue'
 

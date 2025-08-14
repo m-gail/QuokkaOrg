@@ -17,7 +17,7 @@ import ChevronRightIcon from '@/components/icons/ChevronRightIcon.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import Text from '@/components/Text.vue'
 import { rangeFilter } from '@/org/parser/filters'
-import type { Agenda } from '@/org/parser/types'
+import type { Agenda } from '@/org/types'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 

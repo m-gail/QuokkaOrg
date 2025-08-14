@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Agenda } from '@/org/parser/types';
+import type { Agenda } from '@/org/types';
 import AgendaDayCard from './AgendaDayCard.vue';
 
 const { agenda } = defineProps<{ agenda: Agenda }>()

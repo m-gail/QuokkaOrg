@@ -2,12 +2,7 @@
 import { cls } from '@/app/common/classes'
 import { computed, type Component } from 'vue'
 
-const { type, icon } = withDefaults(
-  defineProps<{ type?: 'normal' | 'clear'; icon?: Component }>(),
-  {
-    type: 'normal',
-  },
-)
+const { type = 'normal', icon } = defineProps<{ type?: 'normal' | 'clear'; icon?: Component }>()
 const emit = defineEmits<{ click: [] }>()
 
 const classes = computed(() => cls(['btn', { normal: undefined, clear: 'btn-ghost' }[type]]))
