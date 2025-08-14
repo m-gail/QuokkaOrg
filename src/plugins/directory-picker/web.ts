@@ -17,7 +17,22 @@ export class WebDirectoryPicker extends WebPlugin implements DirectoryPickerPlug
     return { path: '/unknown' }
   }
   async listDirectory(): Promise<{ files: File[] }> {
-    return { files: [{ absolutePath: '/unknown/index.org', relativePath: 'index.org', name: 'index.org', lastModified: 0 }] }
+    return {
+      files: [
+        {
+          absolutePath: '/unknown/index.org',
+          relativePath: 'index.org',
+          name: 'index.org',
+          lastModified: 2,
+        },
+        {
+          absolutePath: '/unknown/index2.org',
+          relativePath: 'index2.org',
+          name: 'index2.org',
+          lastModified: 3,
+        },
+      ],
+    }
   }
   async readFile(filePath: FilePath): Promise<FileContent> {
     if (filePath.path === '/unknown/index.org') {
@@ -25,7 +40,7 @@ export class WebDirectoryPicker extends WebPlugin implements DirectoryPickerPlug
         content: `
 * Uni
 ** Algorithms and Datastructures Test
-<2025-08-12 Wed 15:00>
+<2025-08-12 Wed 18:00>
 ** Analysis Test
 <2025-08-12 Wed 16:00>
 ** Security Test
@@ -44,6 +59,13 @@ export class WebDirectoryPicker extends WebPlugin implements DirectoryPickerPlug
 <2025-09-04 Wed 15:00>
 ** Sprint Retro
 <2025-09-05 Wed 15:00>
+`,
+      }
+    } else if (filePath.path === '/unknown/index2.org') {
+      return {
+        content: `
+* Unrelated
+<2025-08-14 Wed 19:00>
 `,
       }
     } else {

@@ -1,7 +1,7 @@
 import { Parser, Language, Node } from 'web-tree-sitter'
 import type { Agenda, AgendaDay } from './types'
 
-export async function parseSingleFile(content: string): Promise<Agenda> {
+export async function parseSingleFile(relativePath: string, content: string): Promise<Agenda> {
   const parser = await createOrgParser()
   const tree = parser.parse(content)
 
@@ -25,7 +25,7 @@ export async function parseSingleFile(content: string): Promise<Agenda> {
     const agendaDay = days.get(date)
     agendaDay?.events.push({
       time: getTime(timestampNode),
-      file: 'unknown',
+      fileRelativePath: relativePath,
       breadcrumbs: getBreadcrumbs(timestampNode),
     })
   }

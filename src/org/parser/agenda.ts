@@ -1,19 +1,10 @@
-import { parseSingleFile } from "./singleFile"
-import type { AgendaDay, Agenda, AgendaEvent } from "./types"
+import type { Agenda, AgendaDay, AgendaEvent } from "./types"
 
 export type OrgFile = () => Promise<string>
 
 export type AgendaFilter = (event: AgendaDay) => boolean
 
-export async function buildAgenda(files: OrgFile[], filter?: AgendaFilter): Promise<Agenda> {
-  let fullAgenda: Agenda = { days: [] }
-
-  for (const file of files) {
-    const content = await file()
-    const currentFileAgenda = await parseSingleFile(content)
-    fullAgenda = merge(fullAgenda, currentFileAgenda)
-  }
-
+export async function sortAndFilterAgenda(fullAgenda: Agenda, filter?: AgendaFilter): Promise<Agenda> {
   for (const day of fullAgenda.days) {
     day.events.sort(compareEvents)
   }
@@ -35,7 +26,7 @@ function compareEvents(e1: AgendaEvent, e2: AgendaEvent): number {
   return time1.localeCompare(time2)
 }
 
-function merge(fullAgenda: Agenda, addedAgenda: Agenda): Agenda {
+export function mergeAgendas(fullAgenda: Agenda, addedAgenda: Agenda): Agenda {
   const newDays = addedAgenda.days.filter((day) => !hasDate(fullAgenda, day.date))
 
   const existingDaysMerged: AgendaDay[] = fullAgenda.days.map((day) => ({

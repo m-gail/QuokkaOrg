@@ -9,7 +9,7 @@ export type AgendaDay = {
 
 export type AgendaEvent = {
   time?: string
-  file: string
+  fileRelativePath: string
   breadcrumbs: string[]
 }
 
