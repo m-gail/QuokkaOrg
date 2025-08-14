@@ -40,6 +40,7 @@ const events = computed(() => agenda.value?.days[0]?.events ?? [])
 watch(
   () => route.params.date,
   async () => {
+    agenda.value = undefined
     const [rangeStart, rangeEnd] = getDateRange(date.value, 1)
     if (settings.directoryPath !== '') {
       agenda.value = await loadAgenda(settings.directoryPath, rangeFilter(rangeStart, rangeEnd))
