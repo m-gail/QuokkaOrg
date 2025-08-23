@@ -23,6 +23,7 @@ onMounted(async () => {
   if (settings.directoryPath !== '') {
     agenda.value = await loadAgenda(
       settings.directoryPath,
+      settings.ignoredFolders,
       rangeFilter(startDate.value, endDate.value),
     )
   }

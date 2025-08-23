@@ -11,13 +11,17 @@ export interface FilePath {
   path: string
 }
 
+export interface IgnoredFolders {
+  ignoredFolders: string[]
+}
+
 export interface FileContent {
   content: string
 }
 
 export interface DirectoryPickerPlugin {
   pickDirectory(): Promise<FilePath>
-  listDirectory(options: FilePath): Promise<{ files: File[] }>
+  listDirectory(options: FilePath & IgnoredFolders): Promise<{ files: File[] }>
   readFile(options: FilePath): Promise<FileContent>
 }
 

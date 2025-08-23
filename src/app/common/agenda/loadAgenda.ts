@@ -6,7 +6,7 @@ import { sortAgenda } from '@/org/sort'
 import type { Agenda } from '@/org/types'
 import { updateListDirCache } from './cache/updateListDirCache'
 
-export async function loadAgenda(directory: string, filter?: AgendaFilter): Promise<Agenda> {
+export async function loadAgenda(directory: string, ignoredFolders: string[], filter?: AgendaFilter): Promise<Agenda> {
   const oldListDirCache = defaultListDirCacheProvider.get()
   const newListDirCache = await updateListDirCache(
     oldListDirCache,
@@ -14,6 +14,7 @@ export async function loadAgenda(directory: string, filter?: AgendaFilter): Prom
       (
         await DirectoryPicker.listDirectory({
           path: directory,
+          ignoredFolders: ignoredFolders
         })
       ).files,
     (cache) => defaultListDirCacheProvider.set(cache),

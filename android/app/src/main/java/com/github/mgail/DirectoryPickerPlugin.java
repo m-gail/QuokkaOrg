@@ -17,6 +17,8 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.ActivityCallback;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,8 +40,9 @@ public class DirectoryPickerPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void listDirectory(PluginCall call) {
-        List<File> files = recursivelyListDirectory(call.getString("path"));
+    public void listDirectory(PluginCall call) throws JSONException {
+        List<String> ignoredFolders = call.getArray("ignoredFolders").toList();
+        List<File> files = recursivelyListDirectory(call.getString("path"), ignoredFolders);
         JSObject ret = new JSObject();
         ret.put("files", new JSArray(files.stream().map(file -> {
             JSObject jsFile = new JSObject();
@@ -65,7 +68,7 @@ public class DirectoryPickerPlugin extends Plugin {
         }
     }
 
-    private List<File> recursivelyListDirectory(String path) {
+    private List<File> recursivelyListDirectory(String path, List<String> ignoredFolders) {
         ContentResolver contentResolver = getContext().getContentResolver();
         Uri rootContentUri = Uri.parse(path);
         Uri rootChildrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(rootContentUri, DocumentsContract.getTreeDocumentId(rootContentUri));
@@ -89,7 +92,7 @@ public class DirectoryPickerPlugin extends Plugin {
                     String mimeType = cursor.getString(2);
                     long lastModified = cursor.getLong(3);
                     if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
-                        if (name.equals(".stversions")) { // syncthing folder
+                        if (ignoredFolders.contains(name)) {
                             continue;
                         }
                         directoryQueue.add(new RecursiveQueueItem(addToRelativePath(currentItem.relativePath(), name), DocumentsContract.buildChildDocumentsUriUsingTree(rootContentUri, documentId)));

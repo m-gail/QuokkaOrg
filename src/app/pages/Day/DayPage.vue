@@ -43,7 +43,7 @@ watch(
     agenda.value = undefined
     const [rangeStart, rangeEnd] = getDateRange(date.value, 1)
     if (settings.directoryPath !== '') {
-      agenda.value = await loadAgenda(settings.directoryPath, rangeFilter(rangeStart, rangeEnd))
+      agenda.value = await loadAgenda(settings.directoryPath, settings.ignoredFolders, rangeFilter(rangeStart, rangeEnd))
     }
   },
   { immediate: true }
