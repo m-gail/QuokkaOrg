@@ -4,7 +4,7 @@ import { parseSingleFile } from "@/org/parser"
 import type { Agenda } from "@/org/types"
 import type { AgendaCache } from "./types"
 
-export async function updateCache(
+export async function updateAgendaCache(
   cache: AgendaCache,
   listDirResult: File[],
   readFile: (file: FilePath) => Promise<string>,

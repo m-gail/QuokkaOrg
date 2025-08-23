@@ -1,24 +1,39 @@
-import type { AgendaCache, CacheProvider } from "./types";
+import type { AgendaCache, CacheProvider, ListDirCache } from './types'
 
-const CACHE_KEY = 'QuokkaOrg.cachedAgenda'
+const AGENDA_CACHE_KEY = 'QuokkaOrg.cachedAgenda'
+const LISTDIR_CACHE_KEY = 'QuokkaOrg.cachedListDir'
 
-class LocalStorageCacheProvider implements CacheProvider {
-  constructor(private cacheKey: string) { }
+class StorageCacheProvider<T> implements CacheProvider<T> {
+  constructor(
+    private storage: Storage,
+    private cacheKey: string,
+    private getDefaultCache: () => T,
+  ) { }
 
-  get(): AgendaCache {
-    return JSON.parse(localStorage.getItem(this.cacheKey) ?? 'null') ?? getDefaultCache()
+  get(): T {
+    return JSON.parse(this.storage.getItem(this.cacheKey) ?? 'null') ?? this.getDefaultCache()
   }
-  set(cache: AgendaCache): void {
-    localStorage.setItem(this.cacheKey, JSON.stringify(cache))
+  set(cache: T): void {
+    this.storage.setItem(this.cacheKey, JSON.stringify(cache))
   }
   clear(): void {
-    localStorage.removeItem(this.cacheKey)
+    this.storage.removeItem(this.cacheKey)
   }
-
 }
 
-function getDefaultCache(): AgendaCache {
+function getDefaultAgendaCache(): AgendaCache {
   return { knownFiles: [], cachedAgenda: { days: [] } }
 }
 
-export const defaultCacheProvider: CacheProvider = new LocalStorageCacheProvider(CACHE_KEY)
+function getDefaultListDirCache(): ListDirCache | null {
+  return null
+}
+
+export const defaultAgendaCacheProvider: CacheProvider<AgendaCache> = new StorageCacheProvider(
+  localStorage,
+  AGENDA_CACHE_KEY,
+  getDefaultAgendaCache,
+)
+
+export const defaultListDirCacheProvider: CacheProvider<ListDirCache | null> =
+  new StorageCacheProvider(sessionStorage, LISTDIR_CACHE_KEY, getDefaultListDirCache)
