@@ -2,10 +2,15 @@
 import { cls } from '@/app/common/classes'
 import { computed, type Component } from 'vue'
 
-const { type = 'normal', icon } = defineProps<{ type?: 'normal' | 'clear'; icon?: Component }>()
+const { type = 'normal', icon } = defineProps<{
+  type?: 'normal' | 'clear' | 'red'
+  icon?: Component
+}>()
 const emit = defineEmits<{ click: [] }>()
 
-const classes = computed(() => cls(['btn', { normal: undefined, clear: 'btn-ghost' }[type]]))
+const classes = computed(() =>
+  cls(['btn', { normal: undefined, clear: 'btn-ghost', red: 'btn-soft btn-error' }[type]]),
+)
 </script>
 
 <template>
