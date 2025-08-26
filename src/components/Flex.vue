@@ -12,15 +12,13 @@ const props = withDefaults(
 )
 
 const classes = computed(() =>
-  cls(
-    [
-      'flex',
-      props.col ? 'flex-col' : 'flex-row',
-      `gap-${props.gap}`,
-      props.center ? 'items-center justify-center' : undefined,
-      props.class,
-    ],
-  ),
+  cls([
+    'flex',
+    props.col ? 'flex-col' : 'flex-row',
+    `gap-${props.gap}`,
+    props.center ? 'items-center justify-center' : undefined,
+    props.class,
+  ]),
 )
 </script>
 <template>

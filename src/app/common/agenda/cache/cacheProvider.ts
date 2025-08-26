@@ -8,7 +8,7 @@ class StorageCacheProvider<T> implements CacheProvider<T> {
     private storage: Storage,
     private cacheKey: string,
     private getDefaultCache: () => T,
-  ) { }
+  ) {}
 
   get(): T {
     return JSON.parse(this.storage.getItem(this.cacheKey) ?? 'null') ?? this.getDefaultCache()

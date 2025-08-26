@@ -1,5 +1,5 @@
-import type { File } from "@/components/directoryPicker"
-import type { Agenda } from "@/org/types"
+import type { File } from '@/components/directoryPicker'
+import type { Agenda } from '@/org/types'
 
 export type AgendaCache = {
   knownFiles: File[]
@@ -16,4 +16,3 @@ export type CacheProvider<T> = {
   set(cache: T): void
   clear(): void
 }
-

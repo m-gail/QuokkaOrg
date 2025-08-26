@@ -1,8 +1,8 @@
-import type { File, FilePath } from "@/components/directoryPicker"
-import { mergeAgendas } from "@/org/merge"
-import { parseSingleFile } from "@/org/parser"
-import type { Agenda } from "@/org/types"
-import type { AgendaCache } from "./types"
+import type { File, FilePath } from '@/components/directoryPicker'
+import { mergeAgendas } from '@/org/merge'
+import { parseSingleFile } from '@/org/parser'
+import type { Agenda } from '@/org/types'
+import type { AgendaCache } from './types'
 
 export async function updateAgendaCache(
   cache: AgendaCache,

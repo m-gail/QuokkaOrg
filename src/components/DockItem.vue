@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, type Component } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, type Component } from 'vue'
+import { useRoute } from 'vue-router'
 
 const { link } = defineProps<{ link: { text: string; to: string; icon: Component } }>()
 const route = useRoute()

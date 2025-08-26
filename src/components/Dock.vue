@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { Component } from 'vue';
-import DockItem from './DockItem.vue';
+import type { Component } from 'vue'
+import DockItem from './DockItem.vue'
 
-const { links } = defineProps<{ links: { text: string; to: string, icon: Component }[] }>()
-
+const { links } = defineProps<{ links: { text: string; to: string; icon: Component }[] }>()
 </script>
 
 <template>

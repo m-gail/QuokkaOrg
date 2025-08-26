@@ -1,4 +1,4 @@
-import type { Agenda, AgendaDay, AgendaEvent } from "./types"
+import type { Agenda, AgendaDay, AgendaEvent } from './types'
 
 export function mergeAgendas(fullAgenda: Agenda, addedAgenda: Agenda): Agenda {
   const newDays = addedAgenda.days.filter((day) => !hasDate(fullAgenda, day.date))

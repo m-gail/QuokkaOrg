@@ -12,4 +12,3 @@ export type AgendaEvent = {
   fileRelativePath: string
   breadcrumbs: string[]
 }
-

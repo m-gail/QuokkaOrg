@@ -1,4 +1,9 @@
-@import "tailwindcss";
-@plugin "daisyui";
+@import 'tailwindcss';
+@plugin "daisyui" {
+  themes:
+    emerald --default,
+    forest --prefersdark;
+}
 
 @source inline("gap-{0..10}");
+@source inline("grid-cols-{0..10}");

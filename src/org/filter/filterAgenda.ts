@@ -1,4 +1,4 @@
-import type { Agenda, AgendaDay } from "../types"
+import type { Agenda, AgendaDay } from '../types'
 
 export type AgendaFilter = (event: AgendaDay) => boolean
 

@@ -1,4 +1,4 @@
-import type { AgendaDay } from "../types"
+import type { AgendaDay } from '../types'
 
 export function rangeFilter(rangeStart: Date, rangeEnd: Date) {
   return (day: AgendaDay) => {

@@ -18,7 +18,7 @@ const startDate = ref<Date>(new Date())
 const endDate = ref<Date>(new Date())
 
 onMounted(async () => {
-  [startDate.value, endDate.value] = getDateRange(new Date(), 21)
+  ;[startDate.value, endDate.value] = getDateRange(new Date(), 21)
 
   if (settings.directoryPath !== '') {
     agenda.value = await loadAgenda(

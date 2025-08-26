@@ -35,7 +35,7 @@ function navigateNext() {
   router.push(`/calendar/day/${formatIsoDate(getNextDay(date.value))}`)
 }
 
-const agenda = ref<Agenda | undefined>({ days: []})
+const agenda = ref<Agenda | undefined>({ days: [] })
 const events = computed(() => agenda.value?.days[0]?.events ?? [])
 watch(
   () => route.params.date,
@@ -43,10 +43,14 @@ watch(
     agenda.value = undefined
     const [rangeStart, rangeEnd] = getDateRange(date.value, 1)
     if (settings.directoryPath !== '') {
-      agenda.value = await loadAgenda(settings.directoryPath, settings.ignoredFolders, rangeFilter(rangeStart, rangeEnd))
+      agenda.value = await loadAgenda(
+        settings.directoryPath,
+        settings.ignoredFolders,
+        rangeFilter(rangeStart, rangeEnd),
+      )
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>
 
@@ -60,7 +64,7 @@ watch(
       <Button type="clear" :icon="ChevronLeftIcon" @click="navigatePrevious"></Button>
       <Text center weight="bold" class="py-2 grow" size="lg">{{
         formatDateWithWeekDay(date)
-        }}</Text>
+      }}</Text>
       <Button type="clear" :icon="ChevronRightIcon" @click="navigateNext"></Button>
     </Flex>
     <AgendaEventsList :events="events" v-if="events.length > 0" />

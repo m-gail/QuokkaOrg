@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
-import Flex from '@/components/Flex.vue';
+import Flex from '@/components/Flex.vue'
 import List from '@/components/List.vue'
 import ListItem from '@/components/ListItem.vue'
 import type { AgendaEvent } from '@/org/types'
