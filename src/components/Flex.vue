@@ -3,11 +3,20 @@ import { cls } from '@/app/common/classes'
 import { computed } from 'vue'
 
 const props = withDefaults(
-  defineProps<{ col?: boolean; class?: string; gap?: string; center?: boolean }>(),
+  defineProps<{
+    col?: boolean
+    class?: string
+    gap?: string
+    center?: boolean
+    padding?: string
+    fillParent?: boolean
+  }>(),
   {
     col: false,
     gap: '0',
+    padding: '0',
     center: false,
+    fillParent: false,
   },
 )
 
@@ -16,7 +25,9 @@ const classes = computed(() =>
     'flex',
     props.col ? 'flex-col' : 'flex-row',
     `gap-${props.gap}`,
-    props.center ? 'items-center justify-center' : undefined,
+    `p-${props.padding}`,
+    props.center && 'items-center justify-center',
+    props.fillParent && 'w-full h-full',
     props.class,
   ]),
 )

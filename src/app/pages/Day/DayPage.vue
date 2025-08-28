@@ -59,12 +59,10 @@ watch(
   <CenterStack v-else-if="agenda === undefined">
     <LoadingSpinner />
   </CenterStack>
-  <Flex col gap="4" v-else class="p-4">
+  <Flex v-else col gap="4" padding="4">
     <Flex center>
       <Button type="clear" :icon="ChevronLeftIcon" @click="navigatePrevious"></Button>
-      <Text center weight="bold" class="py-2 grow" size="lg">{{
-        formatDateWithWeekDay(date)
-      }}</Text>
+      <Text center weight="bold" grow size="lg">{{ formatDateWithWeekDay(date) }}</Text>
       <Button type="clear" :icon="ChevronRightIcon" @click="navigateNext"></Button>
     </Flex>
     <AgendaEventsList :events="events" v-if="events.length > 0" />

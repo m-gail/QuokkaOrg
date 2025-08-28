@@ -12,7 +12,7 @@ const navbarRoutes = [
 </script>
 
 <template>
-  <main class="pb-20">
+  <main class="pb-16 min-h-dvh h-dvh overflow-scroll">
     <RouterView />
   </main>
   <Dock :links="navbarRoutes" />

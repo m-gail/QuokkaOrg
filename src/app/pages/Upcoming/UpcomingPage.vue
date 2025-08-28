@@ -35,10 +35,10 @@ onMounted(async () => {
   <CenterStack v-else-if="agenda === undefined">
     <LoadingSpinner />
   </CenterStack>
-  <Flex col gap="4" v-else class="p-4">
-    <div class="text-center py-2 text-lg font-bold">
+  <Flex v-else col gap="4" padding="4">
+    <Text size="lg" center weight="bold">
       {{ formatDate(startDate) }} - {{ formatDate(endDate) }}
-    </div>
+    </Text>
     <AgendaView :agenda="agenda" v-if="agenda.days.length > 0" />
     <Text v-else center>No upcoming events</Text>
   </Flex>

@@ -6,12 +6,14 @@ const {
   weight = 'normal',
   center = false,
   size = 'md',
+  grow = false,
   ...props
 } = defineProps<{
   weight?: 'normal' | 'bold'
   center?: boolean
   size?: 'lg' | 'md'
   class?: string
+  grow?: boolean
 }>()
 
 const classes = computed(() =>
@@ -19,6 +21,7 @@ const classes = computed(() =>
     weight === 'bold' ? 'font-bold' : undefined,
     center ? 'text-center' : undefined,
     size === 'lg' ? 'text-lg' : undefined,
+    grow && 'grow',
     props.class,
   ]),
 )

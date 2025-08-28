@@ -1,5 +1,9 @@
+<script setup lang="ts">
+import Flex from './Flex.vue'
+</script>
+
 <template>
-  <div class="flex justify-center items-center p-4 min-h-dvh h-full">
+  <Flex center fill-parent padding="4">
     <slot />
-  </div>
+  </Flex>
 </template>

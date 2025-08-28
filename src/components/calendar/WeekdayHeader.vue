@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import Flex from '../Flex.vue'
+import Text from '../Text.vue'
 
 const { weekday } = defineProps<{ weekday: number }>()
 const WEEKDAY_NAMES = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
 </script>
 <template>
-  <Flex class="my-2 text-base-content/85">{{ WEEKDAY_NAMES[weekday] }}</Flex>
+  <Flex padding="2" center>
+    <Text weight="bold">{{ WEEKDAY_NAMES[weekday] }}</Text>
+  </Flex>
 </template>

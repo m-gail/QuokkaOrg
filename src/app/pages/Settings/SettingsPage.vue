@@ -26,7 +26,7 @@ function onIgnoredFoldersChange(value: string) {
 </script>
 
 <template>
-  <Flex class="p-4" col gap="4">
+  <Flex padding="4" col gap="4">
     <FormGroup title="File Settings">
       <FileInput
         label="Directory Path"
