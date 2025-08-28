@@ -7,7 +7,7 @@ import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import Text from '@/components/Text.vue'
-import { rangeFilter } from '@/org/parser/filters'
+import { rangeFilter } from '@/org/filter/generic'
 import type { Agenda } from '@/org/types'
 import { onMounted, ref } from 'vue'
 

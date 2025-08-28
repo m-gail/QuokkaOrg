@@ -4,6 +4,7 @@ import { cls } from '@/app/common/classes'
 import { computed } from 'vue'
 import type { CalendarEvent } from './types'
 import Flex from '../Flex.vue'
+import EventBadge from './EventBadge.vue'
 
 const { day, currentMonth, isToday, events } = defineProps<{
   day: Date
@@ -19,18 +20,20 @@ function onChange(day: Date) {
 }
 
 const classes = computed(() =>
-  cls([!currentMonth && 'text-base-content/50', isToday && 'text-primary', 'h-full', 'w-full']),
+  cls([
+    !currentMonth && 'text-base-content/50',
+    isToday && 'text-primary',
+    'h-full',
+    'w-full',
+    'p-0',
+  ]),
 )
 </script>
 <template>
   <Button :class="classes" type="clear" @click="() => onChange(day)">
-    <Flex padding="2" class="relative">
+    <Flex gap="1" col class="max-w-full">
       {{ day.getDate() }}
-      <div
-        v-if="events.length > 0"
-        aria-label="status"
-        class="status status-primary absolute top-0 right-0"
-      />
+      <EventBadge :key="event.title" v-for="event in events" :title="event.title" />
     </Flex>
   </Button>
 </template>
