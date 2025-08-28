@@ -43,7 +43,7 @@ function onClick(day: Date) {
 
 <template>
   <Flex col fill-parent>
-    <Flex center>
+    <Flex center padding="4">
       <Button type="clear" :icon="ChevronLeftIcon" @click="previousPage" />
       <Text grow center>{{ formatMonthAndYear(currentPage) }}</Text>
       <Button type="clear" :icon="ChevronRightIcon" @click="nextPage" />
