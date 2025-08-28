@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 @plugin "daisyui" {
   themes:
-    emerald --default,
-    forest --prefersdark;
+    light --default,
+    dark --prefersdark;
 }
 
 @source inline("gap-{0..10}");

@@ -29,7 +29,7 @@ const classes = computed(() =>
       <div
         v-if="events.length > 0"
         aria-label="status"
-        class="status status-secondary absolute top-0 right-0"
+        class="status status-primary absolute top-0 right-0"
       />
     </Flex>
   </Button>
