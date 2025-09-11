@@ -7,11 +7,20 @@ import { computed } from 'vue';
 
 const { day, today } = defineProps<{ day: AgendaDay, today: Date }>()
 const date = computed(() => new Date(Date.parse(day.date)))
-const dayDiff = computed(() => getDayDiff(today, date.value))
+const text = computed(() => {
+  const dayDiff = getDayDiff(today, date.value)
+  if (dayDiff == 0) {
+    return 'Today'
+  } else if (dayDiff == 1) {
+    return `In ${dayDiff} day`
+  } else {
+    return `In ${dayDiff} days`
+  }
+})
 </script>
 
 <template>
-  <Card :title="formatDateWithWeekDay(date)" :badge="`In ${dayDiff} ${dayDiff > 1 ? 'days' : 'day'}`">
+  <Card :title="formatDateWithWeekDay(date)" :badge="text">
     <AgendaEventsList :events="day.events" />
   </Card>
 </template>
