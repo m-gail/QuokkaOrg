@@ -1,5 +1,6 @@
 import type { File } from '@/components/directoryPicker'
 import type { ListDirCache } from './types'
+import { now } from '../../date'
 
 export async function updateListDirCache(
   oldListDirCache: ListDirCache | null,
@@ -29,7 +30,7 @@ async function updateCache(
 }
 
 function getCurrentTimestamp(): number {
-  return new Date().getTime()
+  return now().getTime()
 }
 
 function isOutdated(cache: ListDirCache) {

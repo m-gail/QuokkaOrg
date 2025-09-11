@@ -5,6 +5,7 @@ import {
   getNextMonth,
   getPreviousMonth,
   getStartOfMonth,
+  now,
   isSameDay,
 } from '@/app/common/date'
 import { computed, ref } from 'vue'
@@ -22,7 +23,7 @@ import { isEventOnDay } from './util'
 
 const { events = [] } = defineProps<{ events?: CalendarEvent[] }>()
 
-const today = new Date()
+const today = now()
 const currentPage = ref(getStartOfMonth(today))
 const currentPageItems = computed(() => getPageItems(currentPage.value))
 

@@ -41,6 +41,14 @@ export function isSameDay(d1: Date, d2: Date) {
   return formatIsoDate(d1) === formatIsoDate(d2)
 }
 
+export function getDayDiff(d1: Date, d2: Date) {
+  const first = new Date(d1)
+  first.setHours(0, 0, 0, 0)
+  const second = new Date(d2)
+  second.setHours(0, 0, 0, 0)
+  return Math.abs(Math.round((first.getTime() - second.getTime()) / (1000 * 60 * 60 * 24)))
+}
+
 const DATE_WITH_WEEKDAY = Intl.DateTimeFormat(undefined, {
   weekday: 'long',
   day: 'numeric',
@@ -73,4 +81,8 @@ export function formatMonthAndYear(date: Date) {
 
 export function formatIsoDate(date: Date) {
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0]
+}
+
+export function now(): Date {
+  return new Date()
 }

@@ -36,4 +36,4 @@ export const defaultAgendaCacheProvider: CacheProvider<AgendaCache> = new Storag
 )
 
 export const defaultListDirCacheProvider: CacheProvider<ListDirCache | null> =
-  new StorageCacheProvider(sessionStorage, LISTDIR_CACHE_KEY, getDefaultListDirCache)
+  new StorageCacheProvider(localStorage, LISTDIR_CACHE_KEY, getDefaultListDirCache)

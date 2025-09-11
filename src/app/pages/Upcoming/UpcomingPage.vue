@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { loadAgenda } from '@/app/common/agenda/loadAgenda'
 import AgendaView from '@/app/common/components/AgendaView.vue'
-import { formatDate, getDateRange } from '@/app/common/date'
+import { formatDate, getDateRange, now } from '@/app/common/date'
 import { useSettingsStore } from '@/app/store/settings'
 import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
@@ -14,11 +14,11 @@ import { onMounted, ref } from 'vue'
 const settings = useSettingsStore()
 
 const agenda = ref<Agenda | undefined>(undefined)
-const startDate = ref<Date>(new Date())
-const endDate = ref<Date>(new Date())
+const startDate = ref<Date>(now())
+const endDate = ref<Date>(now())
 
 onMounted(async () => {
-  ;[startDate.value, endDate.value] = getDateRange(new Date(), 21)
+  ;[startDate.value, endDate.value] = getDateRange(now(), 21)
 
   if (settings.directoryPath !== '') {
     agenda.value = await loadAgenda(
@@ -39,7 +39,7 @@ onMounted(async () => {
     <Text size="lg" center weight="bold">
       {{ formatDate(startDate) }} - {{ formatDate(endDate) }}
     </Text>
-    <AgendaView :agenda="agenda" v-if="agenda.days.length > 0" />
+    <AgendaView :agenda="agenda" v-if="agenda.days.length > 0" :today="startDate" />
     <Text v-else center>No upcoming events</Text>
   </Flex>
 </template>
