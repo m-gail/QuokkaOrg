@@ -1,0 +1,25 @@
+* QuokkaOrg - Mobile Agenda Viewer
+#+html: <div align='center'><img src='./.github/icon.png width='256px' height='256px'></div>
+** App
+*** What is the app for
+QuokkaOrg is an app, that simply lets you view any events you have specified in your org-files.
+
+To use it, you first have to choose the directory containing your org-files on the settings tab, the app will then parse all files in the directory you chose and extract the timestamps you have specified there. For example:
+
+#+begin_example
+* Uni
+** Algorithms and Datastructures Test
+<2025-08-12 Wed 18:00>
+** Analysis Test
+<2025-08-13 Wed 16:00>
+* Private
+** Cycling Race
+<2025-09-02 Wed 15:00>
+#+end_example
+
+Will show the following events inside your calendar:
++ "Uni > Algorithms and Datastructures Test" on August 12th
++ "Uni > Analysis Test" on August 13th
++ "Private > Cyling Race" on September 2nd
+*** Screenshots
+[[./.github/UpcomingView.png]] [[./.github/CalendarView.png]]
