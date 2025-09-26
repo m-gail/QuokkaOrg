@@ -1,5 +1,5 @@
 * QuokkaOrg - Mobile Agenda Viewer
-#+html: <div align='center'><img src='./.github/icon.png width='256px' height='256px'></div>
+#+html: <div align='center'><img src='./.github/icon.png' width='256px' height='256px'></div>
 ** App
 *** What is the app for
 QuokkaOrg is an app, that simply lets you view any events you have specified in your org-files.
@@ -23,3 +23,22 @@ Will show the following events inside your calendar:
 + "Private > Cyling Race" on September 2nd
 *** Screenshots
 [[./.github/UpcomingView.png]] [[./.github/CalendarView.png]]
+** Development
+To install dependencies:
+
+#+begin_src bash
+npm install
+npm run grammar # will build install the tree-sitter-org grammar from the submodule
+#+end_src
+
+To run the app on your mobile device, first run the following command. Afterwards you can install the app by pressing the run button in Android Studio.
+
+#+begin_src bash
+npm run build && npx cap sync
+#+end_src
+
+For quicker development you can start a web-version of the app. It will run at ~http://localhost:5173~
+
+#+begin_src bash
+npm run dev
+#+end_src
