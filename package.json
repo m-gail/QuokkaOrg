@@ -21,6 +21,7 @@
     "@capacitor/app": "^7.0.2",
     "@capacitor/core": "^7.4.2",
     "@capacitor/filesystem": "^7.1.4",
+    "@capacitor/local-notifications": "^7.0.2",
     "@tailwindcss/vite": "^4.1.11",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",

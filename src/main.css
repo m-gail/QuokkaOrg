@@ -8,3 +8,10 @@
 @source inline("gap-{0..10}");
 @source inline("grid-cols-{0..10}");
 @source inline("p-{0..10}");
+
+:root {
+  --sat: env(safe-area-inset-top);
+  --sab: env(safe-area-inset-bottom);
+  --sar: env(safe-area-inset-right);
+  --sal: env(safe-area-inset-left);
+}
