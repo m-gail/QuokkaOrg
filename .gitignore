@@ -29,4 +29,5 @@ coverage
 
 *.tsbuildinfo
 public/tree-sitter.wasm
+public/tree-sitter-org.wasm
 .vscode

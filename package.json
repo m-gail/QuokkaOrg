@@ -14,7 +14,8 @@
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "postinstall": "cp node_modules/web-tree-sitter/tree-sitter.wasm public"
+    "postinstall": "cp node_modules/web-tree-sitter/tree-sitter.wasm public",
+    "grammar": "cd tree-sitter-org && npm install && ./node_modules/.bin/tree-sitter build --wasm -o ../public/tree-sitter-org.wasm"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.2",
