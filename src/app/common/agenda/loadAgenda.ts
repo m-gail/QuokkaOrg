@@ -5,6 +5,7 @@ import { filterAgenda, type AgendaFilter } from '@/org/filter/filterAgenda'
 import { sortAgenda } from '@/org/sort'
 import type { Agenda } from '@/org/types'
 import { updateListDirCache } from './cache/updateListDirCache'
+import { rescheduleNotifications } from './notifications/schedule'
 
 export async function loadAgenda(
   directory: string,
@@ -31,5 +32,6 @@ export async function loadAgenda(
     async (path) => (await DirectoryPicker.readFile(path)).content,
   )
   defaultAgendaCacheProvider.set(newCache)
+  rescheduleNotifications(newCache.cachedAgenda).then()
   return sortAgenda(filterAgenda(newCache.cachedAgenda, filter))
 }

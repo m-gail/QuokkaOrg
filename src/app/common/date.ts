@@ -49,6 +49,17 @@ export function getDayDiff(d1: Date, d2: Date) {
   return Math.abs(Math.round((first.getTime() - second.getTime()) / (1000 * 60 * 60 * 24)))
 }
 
+export function dateFromEvent(date: string, time?: string): Date {
+  const result = new Date(Date.parse(`${date}`))
+  if (time != null) {
+    const hour = parseInt(time.substring(0, 2))
+    const minute = parseInt(time.substring(3, 5))
+    result.setHours(hour)
+    result.setMinutes(minute)
+  }
+  return result
+}
+
 const DATE_WITH_WEEKDAY = Intl.DateTimeFormat(undefined, {
   weekday: 'long',
   day: 'numeric',
