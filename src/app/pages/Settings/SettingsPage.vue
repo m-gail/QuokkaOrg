@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  defaultAgendaCacheProvider,
-  defaultListDirCacheProvider,
-} from '@/app/common/agenda/cache/cacheProvider'
+import { useAgendaStore } from '@/app/store/agenda'
 import { useSettingsStore } from '@/app/store/settings'
 import Button from '@/components/Button.vue'
 import FileInput from '@/components/FileInput.vue'
@@ -12,17 +9,18 @@ import Input from '@/components/Input.vue'
 import { ref } from 'vue'
 
 const settings = useSettingsStore()
+const agendaStore = useAgendaStore()
 const ignoredFolders = ref(settings.ignoredFolders.join(','))
 
 function clearCache() {
-  defaultListDirCacheProvider.clear()
-  defaultAgendaCacheProvider.clear()
+  agendaStore.clearCache()
 }
 
 function onIgnoredFoldersChange(value: string) {
   ignoredFolders.value = value
   settings.setIgnoredFolders(ignoredFolders.value.split(','))
 }
+
 </script>
 
 <template>

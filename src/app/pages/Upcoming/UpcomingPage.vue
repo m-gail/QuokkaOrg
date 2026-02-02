@@ -1,32 +1,25 @@
 <script setup lang="ts">
-import { loadAgenda } from '@/app/common/agenda/loadAgenda'
 import AgendaView from '@/app/common/components/AgendaView.vue'
 import { formatDate, getDateRange, now } from '@/app/common/date'
+import { useAgendaStore } from '@/app/store/agenda'
 import { useSettingsStore } from '@/app/store/settings'
 import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import Text from '@/components/Text.vue'
 import { rangeFilter } from '@/org/filter/generic'
-import type { Agenda } from '@/org/types'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const settings = useSettingsStore()
+const agendaStore = useAgendaStore()
 
-const agenda = ref<Agenda | undefined>(undefined)
 const startDate = ref<Date>(now())
 const endDate = ref<Date>(now())
+const agenda = computed(() => agendaStore.getAgenda(rangeFilter(startDate.value, endDate.value)))
 
 onMounted(async () => {
   ;[startDate.value, endDate.value] = getDateRange(now(), 21)
-
-  if (settings.directoryPath !== '') {
-    agenda.value = await loadAgenda(
-      settings.directoryPath,
-      settings.ignoredFolders,
-      rangeFilter(startDate.value, endDate.value),
-    )
-  }
+  agendaStore.tryTriggerUpdate(settings.directoryPath, settings.ignoredFolders)
 })
 </script>
 

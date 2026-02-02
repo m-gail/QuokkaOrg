@@ -8,11 +8,4 @@ export type AgendaCache = {
 
 export type ListDirCache = {
   files: File[]
-  timestamp: number
-}
-
-export type CacheProvider<T> = {
-  get(): T
-  set(cache: T): void
-  clear(): void
 }

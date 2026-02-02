@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { loadAgenda } from '@/app/common/agenda/loadAgenda'
 import AgendaEventsList from '@/app/common/components/AgendaEventsList.vue'
 import {
   formatDateWithWeekDay,
@@ -8,6 +7,7 @@ import {
   getNextDay,
   getPreviousDay,
 } from '@/app/common/date'
+import { useAgendaStore } from '@/app/store/agenda'
 import { useSettingsStore } from '@/app/store/settings'
 import Button from '@/components/Button.vue'
 import CenterStack from '@/components/CenterStack.vue'
@@ -17,11 +17,11 @@ import ChevronRightIcon from '@/components/icons/ChevronRightIcon.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import Text from '@/components/Text.vue'
 import { rangeFilter } from '@/org/filter/generic'
-import type { Agenda } from '@/org/types'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const settings = useSettingsStore()
+const agendaStore = useAgendaStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -35,20 +35,15 @@ function navigateNext() {
   router.push(`/calendar/day/${formatIsoDate(getNextDay(date.value))}`)
 }
 
-const agenda = ref<Agenda | undefined>({ days: [] })
+const agenda = computed(() => {
+  const [rangeStart, rangeEnd] = getDateRange(date.value, 1)
+  return agendaStore.getAgenda(rangeFilter(rangeStart, rangeEnd))
+})
 const events = computed(() => agenda.value?.days[0]?.events ?? [])
 watch(
   () => route.params.date,
   async () => {
-    agenda.value = undefined
-    const [rangeStart, rangeEnd] = getDateRange(date.value, 1)
-    if (settings.directoryPath !== '') {
-      agenda.value = await loadAgenda(
-        settings.directoryPath,
-        settings.ignoredFolders,
-        rangeFilter(rangeStart, rangeEnd),
-      )
-    }
+    agendaStore.tryTriggerUpdate(settings.directoryPath, settings.ignoredFolders)
   },
   { immediate: true },
 )
