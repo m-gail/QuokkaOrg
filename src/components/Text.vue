@@ -28,7 +28,7 @@ const classes = computed(() =>
 </script>
 
 <template>
-  <component :is="size === 'lg' ? 'h5' : 'p'" :class="classes">
+  <component :is="size === 'lg' ? 'h6' : 'p'" :class="classes">
     <slot />
   </component>
 </template>
