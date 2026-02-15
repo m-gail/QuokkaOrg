@@ -23,17 +23,39 @@ const props = withDefaults(
 const classes = computed(() =>
   cls([
     'flex',
-    props.col ? 'flex-col' : 'flex-row',
-    `gap-${props.gap}`,
-    `p-${props.padding}`,
-    props.center && 'items-center justify-center',
-    props.fillParent && 'w-full h-full',
+    props.col && 'col',
+    props.center && 'center',
+    props.fillParent && 'fill-parent',
     props.class,
   ]),
 )
+const style = computed(() => ({
+  gap: `${0.1 * parseInt(props.gap)}rem`,
+  padding: `${0.1 * parseInt(props.padding)}rem`,
+}))
 </script>
 <template>
-  <div :class="classes">
+  <div :class="classes" :style="style">
     <slot />
   </div>
 </template>
+
+<style>
+.flex {
+  display: flex;
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.col {
+  flex-direction: column;
+}
+
+.fill-parent {
+  width: 100%;
+  height: 100%;
+}
+</style>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Button from '../Button.vue'
 import { cls } from '@/app/common/classes'
 import { computed } from 'vue'
-import type { CalendarEvent } from './types'
+import Button from '../Button.vue'
 import Flex from '../Flex.vue'
 import EventBadge from './EventBadge.vue'
+import type { CalendarEvent } from './types'
 
 const { day, currentMonth, isToday, events } = defineProps<{
   day: Date
@@ -20,20 +20,20 @@ function onChange(day: Date) {
 }
 
 const classes = computed(() =>
-  cls([
-    !currentMonth && 'text-base-content/50',
-    isToday && 'text-primary',
-    'h-full',
-    'w-full',
-    'p-0',
-  ]),
+  cls([!currentMonth && 'secondary-text', isToday && 'primary-text bold']),
 )
 </script>
 <template>
-  <Button :class="classes" type="clear" @click="() => onChange(day)">
-    <Flex gap="1" col class="max-w-full">
-      {{ day.getDate() }}
+  <Button class="wrapper" type="clear" @click="() => onChange(day)">
+    <Flex gap="1" col center fill-parent>
+      <span :class="classes">{{ day.getDate() }}</span>
       <EventBadge :key="event.title" v-for="event in events" :title="event.title" />
     </Flex>
   </Button>
 </template>
+
+<style lang="css" scoped>
+.wrapper {
+  height: 100%;
+}
+</style>

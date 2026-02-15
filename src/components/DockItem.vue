@@ -7,8 +7,10 @@ const route = useRoute()
 const isActive = computed(() => route.path.startsWith(link.to))
 </script>
 <template>
-  <RouterLink :to="link.to" :key="link.to" :class="isActive ? 'dock-active' : ''">
-    <component :is="link.icon" class="size-[1.2em]"></component>
-    <span class="dock-label">{{ link.text }}</span>
+  <RouterLink :to="link.to" :key="link.to" :class="isActive ? 'active' : ''">
+    <i class="small">
+      <component :is="link.icon"></component>
+    </i>
+    <span>{{ link.text }}</span>
   </RouterLink>
 </template>

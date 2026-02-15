@@ -7,6 +7,8 @@ async function onChange(event: Event) {
 }
 </script>
 <template>
-  <label class="label">{{ label }}</label>
-  <input class="input" type="text" :value="value" @change="onChange" />
+  <div class="field border label round">
+    <input type="text" :value="value" @change="onChange" />
+    <label>{{ label }}</label>
+  </div>
 </template>

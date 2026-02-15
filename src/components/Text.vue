@@ -18,9 +18,9 @@ const {
 
 const classes = computed(() =>
   cls([
-    weight === 'bold' ? 'font-bold' : undefined,
-    center ? 'text-center' : undefined,
-    size === 'lg' ? 'text-lg' : undefined,
+    'no-margin',
+    weight === 'bold' ? 'bold' : undefined,
+    center ? 'center-align' : undefined,
     grow && 'grow',
     props.class,
   ]),
@@ -28,7 +28,13 @@ const classes = computed(() =>
 </script>
 
 <template>
-  <div :class="classes">
+  <component :is="size === 'lg' ? 'h5' : 'p'" :class="classes">
     <slot />
-  </div>
+  </component>
 </template>
+
+<style lang="css">
+.grow {
+  flex-grow: 1;
+}
+</style>

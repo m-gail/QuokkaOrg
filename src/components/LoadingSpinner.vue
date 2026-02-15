@@ -1,3 +1,3 @@
 <template>
-  <span class="loading loading-spinner loading-xl"></span>
+  <progress class="circle wavy indeterminate" value="50" max="100"></progress>
 </template>

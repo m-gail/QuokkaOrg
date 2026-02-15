@@ -9,18 +9,29 @@ const {
   ...props
 } = defineProps<{ class?: string; gap?: string; cols: string; center?: boolean }>()
 
-const classes = computed(() =>
-  cls([
-    'grid',
-    `grid-cols-${cols}`,
-    `gap-${gap}`,
-    center ? 'items-center justify-items-center' : undefined,
-    props.class,
-  ]),
-)
+const classes = computed(() => cls(['grid', center ? 'center' : undefined, props.class]))
+
+const style = computed(() => ({
+  gap: `${0.1 * parseInt(gap)}rem`,
+  'grid-template-columns': `repeat(${cols}, minmax(0, 1fr))`,
+}))
 </script>
+
 <template>
-  <div :class="classes">
+  <div :class="classes" :style="style">
     <slot />
   </div>
 </template>
+
+<style lang="css">
+.grid {
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+  grid-template-rows: auto;
+  height: 100%;
+}
+.center {
+  align-items: center;
+  justify-content: center;
+}
+</style>

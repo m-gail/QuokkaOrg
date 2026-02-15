@@ -5,8 +5,8 @@ import {
   getNextMonth,
   getPreviousMonth,
   getStartOfMonth,
-  now,
   isSameDay,
+  now,
 } from '@/app/common/date'
 import { computed, ref } from 'vue'
 import Button from '../Button.vue'
@@ -17,9 +17,9 @@ import ChevronRightIcon from '../icons/ChevronRightIcon.vue'
 import Text from '../Text.vue'
 import DayItem from './DayItem.vue'
 import { getPageItems } from './page'
-import WeekdayHeader from './WeekdayHeader.vue'
 import type { CalendarEvent } from './types'
 import { isEventOnDay } from './util'
+import WeekdayHeader from './WeekdayHeader.vue'
 
 const { events = [] } = defineProps<{ events?: CalendarEvent[] }>()
 
@@ -49,7 +49,7 @@ function onClick(day: Date) {
       <Text grow center>{{ formatMonthAndYear(currentPage) }}</Text>
       <Button type="clear" :icon="ChevronRightIcon" @click="nextPage" />
     </Flex>
-    <Grid cols="7" center class="grow grid-rows-[auto] auto-rows-fr">
+    <Grid cols="7" center gap="4">
       <WeekdayHeader v-for="index in 7" :key="index" :weekday="index - 1" />
       <DayItem
         v-for="day in currentPageItems"

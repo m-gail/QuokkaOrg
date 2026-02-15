@@ -8,14 +8,27 @@ const { type = 'normal', icon } = defineProps<{
 }>()
 const emit = defineEmits<{ click: [] }>()
 
-const classes = computed(() =>
-  cls(['btn', { normal: undefined, clear: 'btn-ghost', red: 'btn-soft btn-error' }[type]]),
-)
+const classes = computed(() => cls([type === 'red' && 'error']))
 </script>
 
 <template>
-  <button :class="classes" @click="() => emit('click')">
-    <component v-if="icon != null" :is="icon" class="size-[1.2em]"></component>
-    <slot />
-  </button>
+  <component
+    :is="type === 'clear' ? 'div' : 'button'"
+    :role="type === 'clear' ? 'button' : undefined"
+    :class="classes"
+    @click="() => emit('click')"
+  >
+    <i v-if="icon != null">
+      <component :is="icon"></component>
+    </i>
+    <span>
+      <slot />
+    </span>
+  </component>
 </template>
+
+<style>
+div[role='button'] {
+  cursor: pointer;
+}
+</style>

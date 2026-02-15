@@ -11,9 +11,11 @@ async function pickFile() {
 }
 </script>
 <template>
-  <label class="label">{{ label }}</label>
-  <div class="join">
-    <button @click="pickFile" class="btn join-item">Browse</button>
-    <input class="input join-item" type="text" readonly :value="value" />
-  </div>
+  <nav class="no-space">
+    <button class="left-round large" @click="pickFile">Browse</button>
+    <div class="max field border label">
+      <input class="right-round" type="text" readonly :value="value" />
+      <label>{{ label }}</label>
+    </div>
+  </nav>
 </template>

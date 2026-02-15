@@ -1,3 +1,5 @@
+import "beercss";
+import "material-dynamic-colors";
 import { createApp } from 'vue'
 import router from './app/router'
 import App from './app/App.vue'
