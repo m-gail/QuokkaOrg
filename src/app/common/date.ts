@@ -61,7 +61,7 @@ export function dateFromEvent(date: string, time?: string): Date {
 }
 
 const DATE_WITH_WEEKDAY = Intl.DateTimeFormat(undefined, {
-  weekday: 'long',
+  weekday: 'short',
   day: 'numeric',
   month: 'numeric',
   year: 'numeric',

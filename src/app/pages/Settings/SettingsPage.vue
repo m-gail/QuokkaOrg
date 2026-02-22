@@ -6,6 +6,9 @@ import FileInput from '@/components/FileInput.vue'
 import Flex from '@/components/Flex.vue'
 import FormGroup from '@/components/FormGroup.vue'
 import Input from '@/components/Input.vue'
+import PageContent from '@/components/PageContent.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import PageTitle from '@/components/PageTitle.vue'
 import { ref } from 'vue'
 
 const settings = useSettingsStore()
@@ -20,21 +23,25 @@ function onIgnoredFoldersChange(value: string) {
   ignoredFolders.value = value
   settings.setIgnoredFolders(ignoredFolders.value.split(','))
 }
-
 </script>
 
 <template>
-  <Flex padding="4" col gap="4">
-    <FormGroup title="File Settings">
-      <FileInput
-        label="Directory Path"
-        :value="settings.directoryPath"
-        @change="(value) => settings.setDirectoryPath(value)"
-      />
-      <Input label="Ignored Folders" :value="ignoredFolders" @change="onIgnoredFoldersChange" />
-    </FormGroup>
-    <FormGroup title="Cache">
-      <Button type="red" @click="() => clearCache()">Reset cache</Button>
-    </FormGroup>
-  </Flex>
+  <PageHeader>
+    <PageTitle>Settings</PageTitle>
+  </PageHeader>
+  <PageContent>
+    <Flex padding="4" col gap="4">
+      <FormGroup title="File Settings">
+        <FileInput
+          label="Directory Path"
+          :value="settings.directoryPath"
+          @change="(value) => settings.setDirectoryPath(value)"
+        />
+        <Input label="Ignored Folders" :value="ignoredFolders" @change="onIgnoredFoldersChange" />
+      </FormGroup>
+      <FormGroup title="Cache">
+        <Button type="red" @click="() => clearCache()">Reset cache</Button>
+      </FormGroup>
+    </Flex>
+  </PageContent>
 </template>

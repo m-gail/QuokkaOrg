@@ -1,39 +1,22 @@
 <script setup lang="ts">
 import {
   formatIsoDate,
-  formatMonthAndYear,
-  getNextMonth,
-  getPreviousMonth,
-  getStartOfMonth,
   isSameDay,
-  now,
+  now
 } from '@/app/common/date'
-import { computed, ref } from 'vue'
-import Button from '../Button.vue'
+import { computed } from 'vue'
 import Flex from '../Flex.vue'
 import Grid from '../Grid.vue'
-import ChevronLeftIcon from '../icons/ChevronLeftIcon.vue'
-import ChevronRightIcon from '../icons/ChevronRightIcon.vue'
-import Text from '../Text.vue'
 import DayItem from './DayItem.vue'
 import { getPageItems } from './page'
 import type { CalendarEvent } from './types'
 import { isEventOnDay } from './util'
 import WeekdayHeader from './WeekdayHeader.vue'
 
-const { events = [] } = defineProps<{ events?: CalendarEvent[] }>()
+const { events = [], page } = defineProps<{ events?: CalendarEvent[]; page: Date }>()
 
 const today = now()
-const currentPage = ref(getStartOfMonth(today))
-const currentPageItems = computed(() => getPageItems(currentPage.value))
-
-function previousPage() {
-  currentPage.value = getPreviousMonth(currentPage.value)
-}
-
-function nextPage() {
-  currentPage.value = getNextMonth(currentPage.value)
-}
+const currentPageItems = computed(() => getPageItems(page))
 
 const emit = defineEmits<{ chooseDay: [string] }>()
 
@@ -44,18 +27,13 @@ function onClick(day: Date) {
 
 <template>
   <Flex col fill-parent>
-    <Flex center padding="4">
-      <Button type="clear" :icon="ChevronLeftIcon" @click="previousPage" />
-      <Text grow center>{{ formatMonthAndYear(currentPage) }}</Text>
-      <Button type="clear" :icon="ChevronRightIcon" @click="nextPage" />
-    </Flex>
-    <Grid cols="7" center gap="4">
+    <Grid cols="7" center>
       <WeekdayHeader v-for="index in 7" :key="index" :weekday="index - 1" />
       <DayItem
         v-for="day in currentPageItems"
         :key="formatIsoDate(day)"
         :day="day"
-        :current-month="day.getMonth() == currentPage.getMonth()"
+        :current-month="day.getMonth() == page.getMonth()"
         :is-today="isSameDay(day, today)"
         :events="events.filter((event) => isEventOnDay(event, day))"
         @click="onClick"

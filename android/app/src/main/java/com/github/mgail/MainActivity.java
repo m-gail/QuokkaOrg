@@ -9,6 +9,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         registerPlugin(DirectoryPickerPlugin.class);
+        registerPlugin(MaterialColor.class);
         super.onCreate(savedInstanceState);
     }
 }

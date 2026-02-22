@@ -8,23 +8,20 @@ const { type = 'normal', icon } = defineProps<{
 }>()
 const emit = defineEmits<{ click: [] }>()
 
-const classes = computed(() => cls([type === 'red' && 'error']))
+const classes = computed(() =>
+  cls([type === 'red' && 'error', type === 'clear' && 'transparent circle']),
+)
 </script>
 
 <template>
-  <component
-    :is="type === 'clear' ? 'div' : 'button'"
-    :role="type === 'clear' ? 'button' : undefined"
-    :class="classes"
-    @click="() => emit('click')"
-  >
+  <button :class="classes" @click="() => emit('click')">
     <i v-if="icon != null">
       <component :is="icon"></component>
     </i>
     <span>
       <slot />
     </span>
-  </component>
+  </button>
 </template>
 
 <style>

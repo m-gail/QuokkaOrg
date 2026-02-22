@@ -1,6 +1,0 @@
-:root {
-  --sat: env(safe-area-inset-top);
-  --sab: env(safe-area-inset-bottom);
-  --sar: env(safe-area-inset-right);
-  --sal: env(safe-area-inset-left);
-}

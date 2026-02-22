@@ -15,6 +15,9 @@ import Flex from '@/components/Flex.vue'
 import ChevronLeftIcon from '@/components/icons/ChevronLeftIcon.vue'
 import ChevronRightIcon from '@/components/icons/ChevronRightIcon.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import PageContent from '@/components/PageContent.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import PageTitle from '@/components/PageTitle.vue'
 import Text from '@/components/Text.vue'
 import { rangeFilter } from '@/org/filter/generic'
 import { computed, watch } from 'vue'
@@ -47,20 +50,24 @@ watch(
   },
   { immediate: true },
 )
+const hasEntries = computed(() => events.value.length > 0)
 </script>
 
 <template>
-  <CenterStack v-if="settings.directoryPath === ''">You need to choose a directory</CenterStack>
-  <CenterStack v-else-if="agenda === undefined">
-    <LoadingSpinner />
-  </CenterStack>
-  <Flex v-else col gap="4" padding="4">
-    <Flex center>
-      <Button type="clear" :icon="ChevronLeftIcon" @click="navigatePrevious"></Button>
-      <Text center weight="bold" grow size="lg">{{ formatDateWithWeekDay(date) }}</Text>
-      <Button type="clear" :icon="ChevronRightIcon" @click="navigateNext"></Button>
+  <PageHeader>
+    <PageTitle>{{ formatDateWithWeekDay(date) }}</PageTitle>
+    <LoadingSpinner v-if="agendaStore.updating" />
+    <Button type="clear" :icon="ChevronLeftIcon" @click="navigatePrevious"></Button>
+    <Button type="clear" :icon="ChevronRightIcon" @click="navigateNext"></Button>
+  </PageHeader>
+  <PageContent>
+    <CenterStack v-if="settings.directoryPath === ''">You need to choose a directory</CenterStack>
+    <CenterStack v-else-if="agenda === undefined">
+      <LoadingSpinner />
+    </CenterStack>
+    <Flex v-else col gap="4" padding="4" :center="!hasEntries" :fill-parent="!hasEntries">
+      <AgendaEventsList :events="events" v-if="hasEntries" />
+      <Text v-else>No events scheduled for this day</Text>
     </Flex>
-    <AgendaEventsList :events="events" v-if="events.length > 0" />
-    <Text v-else center>No events scheduled for this day</Text>
-  </Flex>
+  </PageContent>
 </template>
