@@ -11,11 +11,18 @@ async function pickFile() {
 }
 </script>
 <template>
-  <nav class="no-space">
+  <div class="row no-space">
     <button class="left-round large" @click="pickFile">Browse</button>
     <div class="max field border label right-round">
-      <input type="text" readonly :value="value" placeholder=" " />
+      <input class="full-width" type="text" readonly :value="value" placeholder=" " />
       <label>{{ label }}</label>
     </div>
-  </nav>
+  </div>
 </template>
+
+<style lang="css" scoped>
+/* usage with button breaks minimal width in fieldset */
+.full-width {
+  width: 100%;
+}
+</style>
