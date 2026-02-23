@@ -2,7 +2,7 @@
 const { title } = defineProps<{ title: string }>()
 </script>
 <template>
-  <button class="chip primary event-badge small">
+  <button class="chip primary event-badge small no-padding">
     {{ title }}
   </button>
 </template>
