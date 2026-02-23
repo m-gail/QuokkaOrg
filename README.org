@@ -22,7 +22,7 @@ Will show the following events inside your calendar:
 + "Uni > Analysis Test" on August 13th
 + "Private > Cyling Race" on September 2nd
 *** Screenshots
-[[./.github/UpcomingView.png]] [[./.github/CalendarView.png]]
+#+html: <div align='center'><img src='./.github/UpcomingView.png' width='300px'> </span><img src='./.github/CalendarView.png' width='300px'></div>
 ** Development
 To install dependencies:
 
