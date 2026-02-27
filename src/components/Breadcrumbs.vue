@@ -8,7 +8,7 @@ const { breadcrumbs } = defineProps<{ breadcrumbs: string[] }>()
   <div class="breadcrumbs">
     <div v-for="(breadcrumb, index) in breadcrumbs" :key="breadcrumb" class="breadcrumb">
       <span>{{ breadcrumb }}</span>
-      <i v-if="index != breadcrumbs.length - 1" class="separator"><ChevronRightIcon /></i>
+      <i v-if="index != breadcrumbs.length - 1" class="separator small"><ChevronRightIcon /></i>
     </div>
   </div>
 </template>
@@ -18,5 +18,12 @@ const { breadcrumbs } = defineProps<{ breadcrumbs: string[] }>()
   display: flex;
   flex-wrap: wrap;
   overflow: auto;
+  align-items: center;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 </style>
