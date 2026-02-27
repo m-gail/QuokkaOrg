@@ -1,5 +1,5 @@
 import { Parser, Language, Node } from 'web-tree-sitter'
-import type { Agenda, AgendaDay } from '../types'
+import type { Agenda, AgendaDay, Urgency } from '../types'
 
 export async function parseSingleFile(relativePath: string, content: string): Promise<Agenda> {
   const parser = await createOrgParser()
@@ -27,6 +27,7 @@ export async function parseSingleFile(relativePath: string, content: string): Pr
       time: getTime(timestampNode),
       fileRelativePath: relativePath,
       breadcrumbs: getBreadcrumbs(timestampNode),
+      urgency: getUrgency(timestampNode),
     })
   }
 
@@ -63,6 +64,20 @@ function getBreadcrumbs(timestampNode: Node) {
 
 function getTitle(section: Node): string | undefined {
   return section.descendantsOfType('headline')[0]?.descendantsOfType('item')[0]?.text
+}
+
+function getUrgency(timestampNode: Node): Urgency {
+  let currentSibling = timestampNode.previousSibling
+  while (currentSibling !== null) {
+    if (currentSibling.type === 'entry_name') {
+      if (currentSibling.text === 'DEADLINE' || currentSibling.text === 'SCHEDULED') {
+        return currentSibling.text
+      }
+      return 'NONE'
+    }
+    currentSibling = currentSibling.previousSibling
+  }
+  return 'NONE'
 }
 
 async function createOrgParser(): Promise<Parser> {

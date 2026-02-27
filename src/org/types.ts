@@ -11,4 +11,7 @@ export type AgendaEvent = {
   time?: string
   fileRelativePath: string
   breadcrumbs: string[]
+  urgency: Urgency
 }
+
+export type Urgency = 'DEADLINE' | 'SCHEDULED' | 'NONE'
