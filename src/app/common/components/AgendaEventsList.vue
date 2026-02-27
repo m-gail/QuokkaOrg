@@ -17,7 +17,7 @@ function getFileBasename(event: AgendaEvent) {
 <template>
   <List v-if="events.length > 0">
     <ListItem v-for="event in events" :key="event.time">
-      <Flex col>
+      <Flex gap="3" col>
         <Breadcrumbs :breadcrumbs="[getFileBasename(event), ...event.breadcrumbs]" />
         {{ event.time }}
       </Flex>
