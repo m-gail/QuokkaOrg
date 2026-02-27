@@ -1,7 +1,7 @@
 package com.github.mgail;
 
 import android.content.Context;
-import android.util.Log;
+import android.os.Build;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -13,9 +13,15 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 public class MaterialColor extends Plugin {
     @PluginMethod
     public void getSourceColor(PluginCall pluginCall) {
+        JSObject result = new JSObject();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            result.put("source", "#0000ff");
+            pluginCall.resolve(result);
+            return;
+        }
+
         Context context = getContext();
         int color = context.getColor(android.R.color.system_accent1_600);
-        JSObject result = new JSObject();
         result.put("source", String.format("#%06x", color));
         pluginCall.resolve(result);
     }
