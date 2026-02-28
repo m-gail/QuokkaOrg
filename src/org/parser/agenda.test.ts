@@ -3,7 +3,7 @@ import { parseSingleFile } from './agenda'
 import type { Agenda } from '../types'
 
 agendaTest(
-  'Multiple entries',
+  'Agenda with multiple entries finds all events',
   'Agenda.org',
   `
 * Uni
@@ -49,7 +49,7 @@ agendaTest(
   },
 )
 
-describe('Urgency', () => {
+describe('Single event with urgency is parsed', () => {
   ; (['DEADLINE', 'SCHEDULED'] as const).forEach((urgency) =>
     agendaTest(
       urgency,

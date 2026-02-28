@@ -40,7 +40,7 @@ function navigateNext() {
 
 const agenda = computed(() => {
   const [rangeStart, rangeEnd] = getDateRange(date.value, 1)
-  return agendaStore.getAgenda(rangeFilter(rangeStart, rangeEnd))
+  return agendaStore.getAgenda({ dayFilter: rangeFilter(rangeStart, rangeEnd) })
 })
 const events = computed(() => agenda.value?.days[0]?.events ?? [])
 watch(

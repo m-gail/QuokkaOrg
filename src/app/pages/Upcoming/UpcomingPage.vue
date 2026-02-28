@@ -3,14 +3,22 @@ import AgendaView from '@/app/common/components/AgendaView.vue'
 import { formatDate, getDateRange, now } from '@/app/common/date'
 import { useAgendaStore } from '@/app/store/agenda'
 import { useSettingsStore } from '@/app/store/settings'
+import Button from '@/components/Button.vue'
 import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
+import AlarmOnIcon from '@/components/icons/AlarmOnIcon.vue'
+import AllInboxIcon from '@/components/icons/AllInboxIcon.vue'
+import AssignmentLateIcon from '@/components/icons/AssignmentLateIcon.vue'
+import FilterIcon from '@/components/icons/FilterIcon.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import MenuButton from '@/components/MenuButton.vue'
+import MenuItem from '@/components/MenuItem.vue'
 import PageContent from '@/components/PageContent.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import PageTitle from '@/components/PageTitle.vue'
 import Text from '@/components/Text.vue'
 import { rangeFilter } from '@/org/filter/generic'
+import type { Urgency } from '@/org/types'
 import { computed, onMounted, ref } from 'vue'
 
 const settings = useSettingsStore()
@@ -18,7 +26,13 @@ const agendaStore = useAgendaStore()
 
 const startDate = ref<Date>(now())
 const endDate = ref<Date>(now())
-const agenda = computed(() => agendaStore.getAgenda(rangeFilter(startDate.value, endDate.value)))
+const filter = ref<Urgency | undefined>(undefined)
+const agenda = computed(() =>
+  agendaStore.getAgenda({
+    dayFilter: rangeFilter(startDate.value, endDate.value),
+    eventFilter: filter.value === undefined ? undefined : (event) => event.urgency === filter.value,
+  }),
+)
 const hasEntries = computed(() => agenda.value.days.length > 0)
 
 onMounted(async () => {
@@ -31,6 +45,28 @@ onMounted(async () => {
   <PageHeader>
     <PageTitle>{{ formatDate(startDate) }} - {{ formatDate(endDate) }}</PageTitle>
     <LoadingSpinner v-if="agendaStore.updating" />
+    <MenuButton>
+      <template #button>
+        <Button type="clear" :icon="FilterIcon" />
+      </template>
+      <template #menu>
+        <MenuItem :active="filter === undefined" :icon="AllInboxIcon" @click="filter = undefined">
+          All
+        </MenuItem>
+        <MenuItem
+          :active="filter === 'DEADLINE'"
+          :icon="AssignmentLateIcon"
+          @click="filter = 'DEADLINE'">
+          Deadline
+        </MenuItem>
+        <MenuItem
+          :active="filter === 'SCHEDULED'"
+          :icon="AlarmOnIcon"
+          @click="filter = 'SCHEDULED'">
+          Scheduled
+        </MenuItem>
+      </template>
+    </MenuButton>
   </PageHeader>
   <PageContent>
     <CenterStack v-if="settings.directoryPath === ''">You need to choose a directory</CenterStack>
