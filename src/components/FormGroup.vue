@@ -3,7 +3,7 @@ const { title } = defineProps<{ title: string }>()
 </script>
 
 <template>
-  <fieldset>
+  <fieldset class="round">
     <legend>{{ title }}</legend>
     <slot />
   </fieldset>

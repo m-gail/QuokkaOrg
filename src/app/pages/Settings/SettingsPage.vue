@@ -30,18 +30,15 @@ function onIgnoredFoldersChange(value: string) {
     <PageTitle>Settings</PageTitle>
   </PageHeader>
   <PageContent>
-    <Flex padding="4" col gap="4">
+    <Flex padding="4" col gap="10">
       <FormGroup title="File Settings">
         <FileInput
           label="Directory Path"
           :value="settings.directoryPath"
-          @change="(value) => settings.setDirectoryPath(value)"
-        />
+          @change="(value) => settings.setDirectoryPath(value)" />
         <Input label="Ignored Folders" :value="ignoredFolders" @change="onIgnoredFoldersChange" />
       </FormGroup>
-      <FormGroup title="Cache">
-        <Button type="red" @click="() => clearCache()">Reset cache</Button>
-      </FormGroup>
+      <Button type="red" @click="() => clearCache()">Reset cache</Button>
     </Flex>
   </PageContent>
 </template>
