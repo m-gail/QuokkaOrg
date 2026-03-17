@@ -27,7 +27,11 @@ const classes = computed(() =>
   <ButtonBase class="wrapper" type="clear" @click="() => onChange(day)">
     <Flex gap="1" col center fill-parent>
       <span :class="classes">{{ day.getDate() }}</span>
-      <EventBadge :key="event.title" v-for="event in events" :title="event.title" />
+      <EventBadge
+        v-for="event in events"
+        :key="event.title"
+        :title="event.title"
+        :color="event.color" />
     </Flex>
   </ButtonBase>
 </template>

@@ -1,8 +1,17 @@
 <script setup lang="ts">
-const { title } = defineProps<{ title: string }>()
+import { computed } from 'vue'
+
+const { title, color } = defineProps<{ title: string; color: 'normal' | 'red' }>()
+const colorClass = computed(
+  () =>
+    ({
+      normal: 'primary',
+      red: 'error',
+    })[color],
+)
 </script>
 <template>
-  <button class="chip primary event-badge small no-padding">
+  <button :class="['chip event-badge small no-padding', colorClass]">
     {{ title }}
   </button>
 </template>

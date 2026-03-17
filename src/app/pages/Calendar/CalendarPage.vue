@@ -10,6 +10,7 @@ import { useAgendaStore } from '@/app/store/agenda'
 import { useSettingsStore } from '@/app/store/settings'
 import Button from '@/components/Button.vue'
 import Calendar from '@/components/calendar/Calendar.vue'
+import type { CalendarEvent } from '@/components/calendar/types'
 import Flex from '@/components/Flex.vue'
 import ChevronLeftIcon from '@/components/icons/ChevronLeftIcon.vue'
 import ChevronRightIcon from '@/components/icons/ChevronRightIcon.vue'
@@ -17,7 +18,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import PageContent from '@/components/PageContent.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import PageTitle from '@/components/PageTitle.vue'
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, computed, ref, type ComputedRef } from 'vue'
 import { useRouter } from 'vue-router'
 
 const settings = useSettingsStore()
@@ -38,12 +39,13 @@ function chooseDay(day: string) {
   router.push(`/calendar/day/${day}`)
 }
 
-const events = computed(
+const events: ComputedRef<CalendarEvent[]> = computed(
   () =>
     agendaStore.getAgenda().days.flatMap((day) =>
       day.events.map((event) => ({
         day: day.date,
         title: event.breadcrumbs[event.breadcrumbs.length - 1],
+        color: event.urgency === 'DEADLINE' ? 'red' : 'normal',
       })),
     ) ?? [],
 )
