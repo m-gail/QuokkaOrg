@@ -19,14 +19,14 @@ function onChange(day: Date) {
   emit('click', day)
 }
 
-const classes = computed(() =>
-  cls([!currentMonth && 'secondary-text', isToday && 'primary-text bold']),
+const dateClasses = computed(() =>
+  cls([!currentMonth && 'opacity-40', isToday && 'on-primary-text bold primary tiny-padding']),
 )
 </script>
 <template>
   <ButtonBase class="wrapper" type="clear" @click="() => onChange(day)">
     <Flex gap="1" col center fill-parent>
-      <span :class="classes">{{ day.getDate() }}</span>
+      <span :class="dateClasses">{{ day.getDate() }}</span>
       <EventBadge
         v-for="event in events"
         :key="event.title"
@@ -40,5 +40,9 @@ const classes = computed(() =>
 .wrapper {
   height: 100%;
   width: 100%;
+}
+
+.opacity-40 {
+  opacity: 0.4;
 }
 </style>
