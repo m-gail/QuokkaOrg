@@ -6,7 +6,7 @@ const { links } = defineProps<{ links: { text: string; to: string; icon: Compone
 </script>
 
 <template>
-  <nav class="toolbar max bottom">
+  <nav class="bottom">
     <DockItem v-for="link in links" :link="link" :key="link.to" />
   </nav>
 </template>
