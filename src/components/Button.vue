@@ -24,9 +24,3 @@ const classes = computed(() =>
     </span>
   </button>
 </template>
-
-<style>
-div[role='button'] {
-  cursor: pointer;
-}
-</style>

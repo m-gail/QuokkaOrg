@@ -6,6 +6,8 @@ import { useSettingsStore } from '@/app/store/settings'
 import Button from '@/components/Button.vue'
 import CenterStack from '@/components/CenterStack.vue'
 import Flex from '@/components/Flex.vue'
+import FloatingActionButton from '@/components/FloatingActionButton.vue'
+import AddIcon from '@/components/icons/AddIcon.vue'
 import AlarmOnIcon from '@/components/icons/AlarmOnIcon.vue'
 import AllInboxIcon from '@/components/icons/AllInboxIcon.vue'
 import AssignmentLateIcon from '@/components/icons/AssignmentLateIcon.vue'
@@ -20,6 +22,9 @@ import Text from '@/components/Text.vue'
 import { rangeFilter } from '@/org/filter/generic'
 import type { Urgency } from '@/org/types'
 import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const settings = useSettingsStore()
 const agendaStore = useAgendaStore()
@@ -74,6 +79,7 @@ onMounted(async () => {
       <LoadingSpinner />
     </CenterStack>
     <Flex v-else col padding="4" :center="!hasEntries" :fill-parent="!hasEntries">
+      <FloatingActionButton :icon="AddIcon" @click="router.push('/new')" />
       <AgendaView :agenda="agenda" v-if="hasEntries" :today="startDate" />
       <Text v-else>No upcoming events</Text>
     </Flex>
