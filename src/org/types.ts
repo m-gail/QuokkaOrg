@@ -14,4 +14,12 @@ export type AgendaEvent = {
   urgency: Urgency
 }
 
+export type AgendaEventCreate = {
+  date: string
+  startTime: string
+  endTime: string
+  title: string
+  urgency: Urgency
+}
+
 export type Urgency = 'DEADLINE' | 'SCHEDULED' | 'NONE'
