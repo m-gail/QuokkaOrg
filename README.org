@@ -1,34 +1,57 @@
-* QuokkaOrg - Mobile Agenda Viewer
-#+html: <div align='center'><img src='./.github/icon.png' width='256px' height='256px'></div>
-** App
-*** What is the app for
-QuokkaOrg is an app, that simply lets you view any events you have specified in your org-files.
+#+html: <img align="left" src='./.github/icon.png' width='100' height='100'>
+/QuokkaOrg/ is an org-mode based calendar app.
 
-To use it, you first have to choose the directory containing your org-files on the settings tab, the app will then parse all files in the directory you chose and extract the timestamps you have specified there. For example:
+It parses all org-mode files from a directory of your choice, extracts timestamps and presents them in a simple, mobile-optimized interface.
+
+#+html: <br>
+
+* ✨ Features
++ Parses all org-mode files in your specified directory (with an optional ignore list)
++ A list of all upcoming events in the next 3 weeks
++ A full calendar to easily browse all your events
++ Notifications the day before an event
++ Special highlighting and filtering of events marked with ~SCHEDULED~ and ~DEADLINE~
++ Available for android
+
+* 📸 Screenshots
+
+#+html: <div align='center'><img src='./.github/UpcomingView.png' width='300px'> <img src='./.github/CalendarView.png' width='300px'></div>
+
+#+html: <br>
+
+#+html: <details>
+#+html: <summary>🔍 View the org-mode source for these screenshots</summary>
+#+html: <br>
+The following org-mode file would produce the events shown in the screenshots. The first breadcrumb "index" is based on the file name containing the event, after removing the ~.org~ suffix.
 
 #+begin_example
 * Uni
 ** Algorithms and Datastructures Test
-<2025-08-12 Wed 18:00>
+DEADLINE: <2025-08-12 Wed 18:00>
+** Algorithms and Datastructures Test
+SCHEDULED: <2025-08-11 Wed 18:00>
 ** Analysis Test
-<2025-08-13 Wed 16:00>
+<2025-08-12 Wed 16:00>
+** Security Test
+<2025-08-12 Wed 17:00>
+** Theoretical Informatics Lecture
+<2025-08-13 Wed 15:00-17:00>
 * Private
-** Cycling Race
-<2025-09-02 Wed 15:00>
+** Cinema
+<2025-08-15 Wed 15:00>
+* Unrelated
+<2025-08-14 Wed 19:00>
 #+end_example
 
-Will show the following events inside your calendar:
-+ "Uni > Algorithms and Datastructures Test" on August 12th
-+ "Uni > Analysis Test" on August 13th
-+ "Private > Cyling Race" on September 2nd
-*** Screenshots
-#+html: <div align='center'><img src='./.github/UpcomingView.png' width='300px'> </span><img src='./.github/CalendarView.png' width='300px'></div>
-** Development
+#+html: </details>
+
+* 🛠️ Development
+
 To install dependencies:
 
 #+begin_src bash
 npm install
-npm run grammar # will build install the tree-sitter-org grammar from the submodule
+npm run grammar # will build the tree-sitter-org grammar from the submodule
 #+end_src
 
 To run the app on your mobile device, first run the following command. Afterwards you can install the app by pressing the run button in Android Studio.
