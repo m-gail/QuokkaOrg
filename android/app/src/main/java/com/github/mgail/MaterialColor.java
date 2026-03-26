@@ -15,7 +15,7 @@ public class MaterialColor extends Plugin {
     public void getSourceColor(PluginCall pluginCall) {
         JSObject result = new JSObject();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            result.put("source", "#0000ff");
+            result.put("source", "#8bc34a");
             pluginCall.resolve(result);
             return;
         }

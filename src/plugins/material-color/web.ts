@@ -10,7 +10,7 @@ export class WebMaterialColor extends WebPlugin implements MaterialColorPlugin {
   }
   async getSourceColor(): Promise<SourceColor> {
     return {
-      source: '#0000ff',
+      source: '#8bc34a',
     }
   }
 }
