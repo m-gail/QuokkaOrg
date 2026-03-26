@@ -66,7 +66,7 @@ const hasEntries = computed(() => events.value.length > 0)
       <LoadingSpinner />
     </CenterStack>
     <Flex v-else col gap="4" padding="4" :center="!hasEntries" :fill-parent="!hasEntries">
-      <AgendaEventsList :events="events" v-if="hasEntries" />
+      <AgendaEventsList :events="events" v-if="hasEntries" default-show-intermediate-breadcrumbs />
       <Text v-else>No events scheduled for this day</Text>
     </Flex>
   </PageContent>

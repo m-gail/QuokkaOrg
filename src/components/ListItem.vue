@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li class="small-padding">
     <slot />
   </li>
 </template>
