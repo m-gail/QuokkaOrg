@@ -12,7 +12,7 @@ async function pickFile() {
 </script>
 <template>
   <div class="row no-space">
-    <button class="left-round large" @click="pickFile">Browse</button>
+    <button class="left-round large fill" @click="pickFile">Browse</button>
     <div class="max field border label right-round">
       <input class="full-width" type="text" readonly :value="value" placeholder=" " />
       <label>{{ label }}</label>

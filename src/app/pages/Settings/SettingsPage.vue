@@ -38,7 +38,9 @@ function onIgnoredFoldersChange(value: string) {
           @change="(value) => settings.setDirectoryPath(value)" />
         <Input label="Ignored Folders" :value="ignoredFolders" @change="onIgnoredFoldersChange" />
       </FormGroup>
-      <Button type="red" @click="() => clearCache()">Reset cache</Button>
+      <FormGroup title="Caching">
+        <Button grow type="red" @click="() => clearCache()">Reset cache</Button>
+      </FormGroup>
     </Flex>
   </PageContent>
 </template>

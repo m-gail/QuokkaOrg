@@ -2,14 +2,15 @@
 import { cls } from '@/app/common/classes'
 import { computed, type Component } from 'vue'
 
-const { type = 'normal', icon } = defineProps<{
+const { type = 'normal', icon, grow } = defineProps<{
   type?: 'normal' | 'clear' | 'red'
+  grow?: boolean;
   icon?: Component
 }>()
 const emit = defineEmits<{ click: [] }>()
 
 const classes = computed(() =>
-  cls([type === 'red' && 'error', type === 'clear' && 'transparent circle']),
+  cls([type === 'red' && 'error', type === 'clear' && 'transparent circle', grow && 'responsive']),
 )
 </script>
 

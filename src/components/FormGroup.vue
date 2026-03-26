@@ -3,8 +3,8 @@ const { title } = defineProps<{ title: string }>()
 </script>
 
 <template>
-  <fieldset class="round">
-    <legend>{{ title }}</legend>
+  <div>
+    <p class="bold">{{ title }}</p>
     <slot />
-  </fieldset>
+  </div>
 </template>
