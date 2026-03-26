@@ -9,15 +9,15 @@ const { title, badge, badgeColor } = defineProps<{
 }>()
 
 const classes = computed(() =>
-  cls([badgeColor, 'chip']),
+  cls(['medium-text bold', `${badgeColor}-text`]),
 )
 </script>
 
 <template>
-  <article>
+  <article class="border">
     <div class="row">
-      <h5 class="small max">{{ title }}</h5>
-      <button v-if="badge != null" :class="classes">{{ badge }}</button>
+      <h5 class="small max bold">{{ title }}</h5>
+      <p v-if="badge != null" :class="classes">{{ badge }}</p>
     </div>
     <p><slot /></p>
   </article>
