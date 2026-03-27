@@ -15,7 +15,8 @@ import type { Urgency } from '@/org/types'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { urgencyOptions } from './options'
-import { notEmpty } from './validation'
+import { notEmpty, notEmptyIfEndTimePresent } from './validation'
+import AddIcon from '@/components/icons/AddIcon.vue'
 
 const router = useRouter()
 
@@ -27,6 +28,7 @@ const date = ref('')
 const dateError = notEmpty(date)
 const startTime = ref('')
 const endTime = ref('')
+const startTimeError = notEmptyIfEndTimePresent(startTime, endTime)
 const urgency = ref('NONE')
 const submitted = ref(false)
 
@@ -63,12 +65,12 @@ function create() {
         <Input label="File" v-model="file" :error-text="fileError" />
         <FormGroup title="Timestamp">
           <Input label="Date" v-model="date" type="date" :error-text="dateError" />
-          <Input label="Start time" v-model="startTime" type="time" />
+          <Input label="Start time" v-model="startTime" type="time" :error-text="startTimeError" />
           <Input label="End time" v-model="endTime" type="time" />
           <Select label="Urgency" v-model="urgency" :options="urgencyOptions" />
         </FormGroup>
         <Text grow></Text>
-        <Button @click="create">Create</Button>
+        <Button :icon="AddIcon" @click="create">Create</Button>
       </Form>
     </Flex>
   </PageContent>
