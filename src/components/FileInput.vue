@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { DirectoryPicker } from './directoryPicker'
+import FolderOpenIcon from './icons/FolderOpenIcon.vue';
 
 const { label, value } = defineProps<{ label: string; value: string }>()
 const emit = defineEmits<{ change: [value: string] }>()
@@ -12,7 +13,10 @@ async function pickFile() {
 </script>
 <template>
   <div class="row no-space">
-    <button class="left-round large fill" @click="pickFile">Browse</button>
+    <button class="left-round large fill" @click="pickFile">
+      <i><FolderOpenIcon /></i>
+      <span>Browse</span>
+    </button>
     <div class="max field border label right-round">
       <input class="full-width" type="text" readonly :value="value" placeholder=" " />
       <label>{{ label }}</label>

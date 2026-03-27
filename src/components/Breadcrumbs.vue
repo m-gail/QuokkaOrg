@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import MoreHorizIcon from './icons/MoreHorizIcon.vue'
+
 const { breadcrumbs, showIntermediate = true } = defineProps<{
   breadcrumbs: string[]
   showIntermediate?: boolean
@@ -15,7 +17,7 @@ const { breadcrumbs, showIntermediate = true } = defineProps<{
         index != 0 && index != breadcrumbs.length - 1 && !showIntermediate && 'hidden',
       ]">
       <span>{{ breadcrumb }}</span>
-      <i v-if="index != breadcrumbs.length - 1" class="separator tiny">more_horiz</i>
+      <i v-if="index != breadcrumbs.length - 1" class="separator tiny"><MoreHorizIcon /></i>
     </div>
   </div>
 </template>
