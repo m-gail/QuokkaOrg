@@ -74,12 +74,12 @@ onMounted(async () => {
     </MenuButton>
   </PageHeader>
   <PageContent>
+    <FloatingActionButton :icon="AddIcon" @click="router.push('/new')" />
     <CenterStack v-if="settings.directoryPath === ''">You need to choose a directory</CenterStack>
     <CenterStack v-else-if="agenda === undefined">
       <LoadingSpinner />
     </CenterStack>
     <Flex v-else col padding="4" :center="!hasEntries" :fill-parent="!hasEntries">
-      <FloatingActionButton :icon="AddIcon" @click="router.push('/new')" />
       <AgendaView :agenda="agenda" v-if="hasEntries" :today="startDate" />
       <Text v-else>No upcoming events</Text>
     </Flex>
