@@ -19,10 +19,16 @@ export interface FileContent {
   content: string
 }
 
+export interface RelativeFileAppend {
+  relativeSubPath: string
+  content: string
+}
+
 export interface DirectoryPickerPlugin {
   pickDirectory(): Promise<FilePath>
   listDirectory(options: FilePath & IgnoredFolders): Promise<{ files: File[] }>
   readFile(options: FilePath): Promise<FileContent>
+  appendToFile(options: FilePath & RelativeFileAppend): Promise<File>
 }
 
 export const DirectoryPicker = registerPlugin<DirectoryPickerPlugin>('DirectoryPicker', {
