@@ -12,7 +12,7 @@ const tests: [string, AgendaEventCreate, string][] = [
       title: 'Some title',
       urgency: 'NONE',
     },
-    '* Some title\n<Wed 2025-01-01>',
+    '* Some title\n<2025-01-01 Wed>',
   ],
   [
     'serializes with date and startTime',
@@ -23,7 +23,7 @@ const tests: [string, AgendaEventCreate, string][] = [
       title: 'Some title',
       urgency: 'NONE',
     },
-    '* Some title\n<Thu 2025-01-02 16:00>',
+    '* Some title\n<2025-01-02 Thu 16:00>',
   ],
   [
     'serializes with date, startTime and endTime',
@@ -34,7 +34,7 @@ const tests: [string, AgendaEventCreate, string][] = [
       title: 'Some title',
       urgency: 'NONE',
     },
-    '* Some title\n<Fri 2025-01-03 16:00-17:00>',
+    '* Some title\n<2025-01-03 Fri 16:00-17:00>',
   ],
   [
     'serializes with DEADLINE',
@@ -45,7 +45,7 @@ const tests: [string, AgendaEventCreate, string][] = [
       title: 'Some title',
       urgency: 'DEADLINE',
     },
-    '* Some title\nDEADLINE: <Wed 2025-01-01>',
+    '* Some title\nDEADLINE: <2025-01-01 Wed>',
   ],
   [
     'serializes with SCHEDULED',
@@ -56,7 +56,7 @@ const tests: [string, AgendaEventCreate, string][] = [
       title: 'Some title',
       urgency: 'SCHEDULED',
     },
-    '* Some title\nSCHEDULED: <Wed 2025-01-01>',
+    '* Some title\nSCHEDULED: <2025-01-01 Wed>',
   ],
 ]
 

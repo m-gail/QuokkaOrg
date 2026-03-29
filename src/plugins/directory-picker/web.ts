@@ -3,6 +3,7 @@ import type {
   File,
   FileContent,
   FilePath,
+  RelativeFileAppend,
 } from '@/components/directoryPicker'
 import { WebPlugin } from '@capacitor/core'
 
@@ -72,6 +73,20 @@ SCHEDULED: <2025-08-11 Wed 18:00>
       }
     } else {
       throw new Error()
+    }
+  }
+  async appendToFile(options: FilePath & RelativeFileAppend): Promise<File> {
+    console.log(`-- Appending --
+${options.path}
+${options.relativeSubPath}
+${options.content}
+-- Appending --
+`)
+    return {
+      absolutePath: '/unknown/' + options.relativeSubPath,
+      relativePath: options.relativeSubPath,
+      name: options.relativeSubPath,
+      lastModified: 0,
     }
   }
 }

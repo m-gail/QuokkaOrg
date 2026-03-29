@@ -20,8 +20,11 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -36,7 +39,23 @@ public class DirectoryPickerPlugin extends Plugin {
         i.addCategory(Intent.CATEGORY_DEFAULT);
         i.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         startActivityForResult(call, i, "pickDirectoryResult");
+    }
+
+    @ActivityCallback
+    private void pickDirectoryResult(PluginCall call, ActivityResult result) {
+        if (call == null) {
+            return;
+        }
+
+        var uri = result.getData().getData();
+        getActivity().getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        String path = result.getData().getData().toString();
+        JSObject directory = new JSObject();
+        directory.put("path", path);
+        call.resolve(directory);
     }
 
     @PluginMethod
@@ -53,19 +72,6 @@ public class DirectoryPickerPlugin extends Plugin {
             return jsFile;
         }).collect(Collectors.toList())));
         call.resolve(ret);
-    }
-
-    @PluginMethod
-    public void readFile(PluginCall call) throws IOException {
-        DocumentFile file = DocumentFile.fromSingleUri(getContext(), Uri.parse(call.getString("path")));
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getContext().getContentResolver().openInputStream(file.getUri())))) {
-            String content = reader.lines().collect(Collectors.joining("\n"));
-            JSObject result = new JSObject();
-            result.put("content", content);
-            call.resolve(result);
-        } catch (IOException ioe) {
-            throw ioe;
-        }
     }
 
     private List<File> recursivelyListDirectory(String path, List<String> ignoredFolders) {
@@ -112,18 +118,46 @@ public class DirectoryPickerPlugin extends Plugin {
         return original + "/" + toAdd;
     }
 
-    @ActivityCallback
-    private void pickDirectoryResult(PluginCall call, ActivityResult result) {
-        if (call == null) {
-            return;
+    @PluginMethod
+    public void readFile(PluginCall call) throws IOException {
+        DocumentFile file = DocumentFile.fromSingleUri(getContext(), Uri.parse(call.getString("path")));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getContext().getContentResolver().openInputStream(file.getUri())))) {
+            String content = reader.lines().collect(Collectors.joining("\n"));
+            JSObject result = new JSObject();
+            result.put("content", content);
+            call.resolve(result);
+        } catch (IOException ioe) {
+            throw ioe;
+        }
+    }
+
+    @PluginMethod
+    public void appendToFile(PluginCall call) throws IOException {
+        String contentToAppend = call.getString("content");
+        String rootPath = call.getString("path");
+        String relativeSubPath = call.getString("relativeSubPath");
+        List<String> relativeSubPathParts = Arrays.asList(relativeSubPath.split("/"));
+
+        DocumentFile currentFile = DocumentFile.fromTreeUri(getContext(), Uri.parse(rootPath));
+
+        for (int i = 0; i < relativeSubPathParts.size(); i++) {
+            boolean isLastPart = i == relativeSubPathParts.size() - 1;
+            String part = relativeSubPathParts.get(i);
+
+            DocumentFile nextFile = currentFile.findFile(part);
+            if (nextFile == null) {
+                if (isLastPart) {
+                    nextFile = currentFile.createFile("plain/text", part);
+                } else {
+                    nextFile = currentFile.createDirectory(part);
+                }
+            }
+            currentFile = nextFile;
         }
 
-        var uri = result.getData().getData();
-        getActivity().getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        String path = result.getData().getData().toString();
-        JSObject directory = new JSObject();
-        directory.put("path", path);
-        call.resolve(directory);
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(getContext().getContentResolver().openOutputStream(currentFile.getUri(), "wa")))) {
+            writer.append("\n");
+            writer.append(contentToAppend);
+        }
     }
 }

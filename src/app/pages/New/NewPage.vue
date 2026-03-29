@@ -17,7 +17,11 @@ import { useRouter } from 'vue-router'
 import { urgencyOptions } from './options'
 import { notEmpty, notEmptyIfEndTimePresent } from './validation'
 import AddIcon from '@/components/icons/AddIcon.vue'
+import { useAgendaStore } from '@/app/store/agenda'
+import { useSettingsStore } from '@/app/store/settings'
+import { DirectoryPicker } from '@/components/directoryPicker'
 
+const settingsStore = useSettingsStore()
 const router = useRouter()
 
 const title = ref('')
@@ -48,7 +52,11 @@ function create() {
     startTime: startTime.value,
     endTime: endTime.value,
   })
-  console.log(event)
+  DirectoryPicker.appendToFile({
+    relativeSubPath: file.value,
+    path: settingsStore.directoryPath,
+    content: event
+  })
   router.push('/upcoming')
 }
 </script>

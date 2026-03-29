@@ -7,7 +7,7 @@ function formatIsoDate(date: Date) {
 }
 
 export function formatOrgModDate(date: Date, startTime: string, endTime: string) {
-  let dateStr = `${ONLY_WEEKDAY.format(date)} ${formatIsoDate(date)}`
+  let dateStr = `${formatIsoDate(date)} ${ONLY_WEEKDAY.format(date)}`
   if (startTime !== '') {
     dateStr += ` ${startTime}`
   }
