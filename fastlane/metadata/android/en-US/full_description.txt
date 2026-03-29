@@ -1,0 +1,11 @@
+QuokkaOrg is an org-mode based calendar app.
+
+It parses all org-mode files from a directory of your choice, extracts timestamps and presents them in a simple, mobile-optimized interface.
+
+Features:
+
+* Parses all org-mode files in your specified directory (with an optional ignore list)
+* A list of all upcoming events in the next 3 weeks
+* A full calendar to easily browse all your events
+* Notifications the day before an event
+* Special highlighting and filtering of events marked with SCHEDULED and DEADLINE
