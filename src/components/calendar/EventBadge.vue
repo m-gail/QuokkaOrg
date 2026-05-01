@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const { title, color } = defineProps<{ title: string; color: 'normal' | 'red' }>()
+const { title, color } = defineProps<{ title: string; color: 'primary' | 'secondary' | 'red' }>()
 const colorClass = computed(
   () =>
     ({
-      normal: 'primary',
+      primary: 'primary',
+      secondary: 'secondary',
       red: 'error',
     })[color],
 )

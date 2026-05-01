@@ -1,5 +1,5 @@
 export type CalendarEvent = {
   day: string
   title: string
-  color: 'normal' | 'red'
+  color: 'primary' | 'secondary' | 'red'
 }

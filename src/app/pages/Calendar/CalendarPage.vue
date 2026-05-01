@@ -45,7 +45,12 @@ const events: ComputedRef<CalendarEvent[]> = computed(
       day.events.map((event) => ({
         day: day.date,
         title: event.breadcrumbs[event.breadcrumbs.length - 1],
-        color: event.urgency === 'DEADLINE' ? 'red' : 'normal',
+        color:
+          event.urgency === 'DEADLINE'
+            ? 'red'
+            : event.urgency === 'SCHEDULED'
+              ? 'primary'
+              : 'secondary',
       })),
     ) ?? [],
 )
