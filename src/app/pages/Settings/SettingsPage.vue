@@ -14,6 +14,7 @@ import { ref, watch } from 'vue'
 const settings = useSettingsStore()
 const agendaStore = useAgendaStore()
 const ignoredFolders = ref(settings.ignoredFolders.join(','))
+const newEventDefaultFile = ref(settings.newEventDefaultFile)
 
 function clearCache() {
   agendaStore.clearCache()
@@ -21,6 +22,9 @@ function clearCache() {
 
 watch(ignoredFolders, () => {
   settings.setIgnoredFolders(ignoredFolders.value.split(','))
+})
+watch(newEventDefaultFile, () => {
+  settings.setNewEventDefaultFile(newEventDefaultFile.value.trim())
 })
 </script>
 
@@ -36,6 +40,9 @@ watch(ignoredFolders, () => {
           :value="settings.directoryPath"
           @change="(value) => settings.setDirectoryPath(value)" />
         <Input label="Ignored Folders" v-model="ignoredFolders" />
+      </FormGroup>
+      <FormGroup title="Event creation">
+        <Input label="Default filename" v-model="newEventDefaultFile" />
       </FormGroup>
       <FormGroup title="Caching">
         <Button grow type="red" @click="() => clearCache()">Reset cache</Button>

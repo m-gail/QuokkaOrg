@@ -25,7 +25,7 @@ const router = useRouter()
 
 const title = ref('')
 const titleError = notEmpty(title)
-const file = ref('')
+const file = ref(settingsStore.newEventDefaultFile)
 const fileError = notEmpty(file)
 const date = ref('')
 const dateError = notEmpty(date)
@@ -54,7 +54,7 @@ function create() {
   DirectoryPicker.appendToFile({
     relativeSubPath: file.value.trim(),
     path: settingsStore.directoryPath,
-    content: event
+    content: event,
   })
   router.push('/upcoming')
 }
@@ -69,7 +69,11 @@ function create() {
     <Flex padding="4" col fill-parent>
       <Form :submitted="submitted">
         <Input label="Title" v-model="title" :error-text="titleError" />
-        <Input label="File" v-model="file" :error-text="fileError" />
+        <Input
+          label="File"
+          v-model="file"
+          :error-text="fileError"
+          :default-value="settingsStore.newEventDefaultFile" />
         <FormGroup title="Timestamp">
           <Input label="Date" v-model="date" type="date" :error-text="dateError" />
           <Input label="Start time" v-model="startTime" type="time" :error-text="startTimeError" />
