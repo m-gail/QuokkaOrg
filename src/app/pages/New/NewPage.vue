@@ -45,14 +45,14 @@ function create() {
     return
   }
   const event = serializeEvent({
-    title: title.value,
+    title: title.value.trim(),
     urgency: urgency.value as Urgency,
     date: date.value,
     startTime: startTime.value,
     endTime: endTime.value,
   })
   DirectoryPicker.appendToFile({
-    relativeSubPath: file.value,
+    relativeSubPath: file.value.trim(),
     path: settingsStore.directoryPath,
     content: event
   })
