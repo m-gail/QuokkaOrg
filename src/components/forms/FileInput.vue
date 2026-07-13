@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { DirectoryPicker } from './directoryPicker'
-import FolderOpenIcon from './icons/FolderOpenIcon.vue';
+import { DirectoryPicker } from '../directoryPicker'
+import FolderOpenIcon from '../icons/FolderOpenIcon.vue';
 
 const { label, value } = defineProps<{ label: string; value: string }>()
 const emit = defineEmits<{ change: [value: string] }>()

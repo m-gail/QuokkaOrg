@@ -4,6 +4,7 @@ import DayPage from '../pages/Day/DayPage.vue'
 import IndexPage from '../pages/Index/IndexPage.vue'
 import SettingsPage from '../pages/Settings/SettingsPage.vue'
 import UpcomingPage from '../pages/Upcoming/UpcomingPage.vue'
+import NewPage from '../pages/New/NewPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,7 @@ const router = createRouter({
       component: DayPage,
     },
     { path: '/settings', component: SettingsPage },
+    { path: '/new', component: NewPage },
   ],
 })
 
