@@ -9,3 +9,16 @@ export async function updateListDirCache(
   const newCache = { files }
   return newCache
 }
+
+export function refreshSingleFile(
+  oldListDirCache: ListDirCache | null,
+  newEntry: File,
+): ListDirCache {
+  const oldFiles = oldListDirCache?.files ?? []
+  return {
+    files: [
+      ...oldFiles.filter((oldFile) => oldFile.relativePath !== newEntry.relativePath),
+      newEntry,
+    ],
+  }
+}

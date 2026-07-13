@@ -160,5 +160,12 @@ public class DirectoryPickerPlugin extends Plugin {
             writer.append("\n");
             writer.append(contentToAppend);
         }
+
+        JSObject file = new JSObject();
+        file.put("absolutePath", currentFile.getUri().toString());
+        file.put("relativePath", relativeSubPath);
+        file.put("lastModified", currentFile.lastModified());
+        file.put("name", currentFile.getName());
+        call.resolve(file);
     }
 }

@@ -19,8 +19,10 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { urgencyOptions } from './options'
 import { notEmpty, notEmptyIfEndTimePresent } from './validation'
+import { useAgendaStore } from '@/app/store/agenda'
 
 const settingsStore = useSettingsStore()
+const agendaStore = useAgendaStore()
 const router = useRouter()
 
 const title = ref('')
@@ -35,7 +37,7 @@ const startTimeError = notEmptyIfEndTimePresent(startTime, endTime)
 const urgency = ref('NONE')
 const submitted = ref(false)
 
-function create() {
+async function create() {
   submitted.value = true
   if (
     titleError.value !== undefined ||
@@ -51,11 +53,12 @@ function create() {
     startTime: startTime.value,
     endTime: endTime.value,
   })
-  DirectoryPicker.appendToFile({
+  const created = await DirectoryPicker.appendToFile({
     relativeSubPath: file.value.trim(),
     path: settingsStore.directoryPath,
     content: event,
   })
+  await agendaStore.refreshSingleFile(created)
   router.push('/upcoming')
 }
 </script>

@@ -2,9 +2,12 @@ import { defineStore, type StateTree } from 'pinia'
 import type { AgendaCache, ListDirCache } from '../common/agenda/cache/types'
 import { filterAgenda, type AgendaFilter } from '@/org/filter/filterAgenda'
 import { sortAgenda } from '@/org/sort'
-import { DirectoryPicker } from '@/components/directoryPicker'
+import { DirectoryPicker, type File } from '@/components/directoryPicker'
 import { updateAgendaCache } from '../common/agenda/cache/updateAgendaCache'
-import { updateListDirCache } from '../common/agenda/cache/updateListDirCache'
+import {
+  refreshSingleFile,
+  updateListDirCache,
+} from '../common/agenda/cache/updateListDirCache'
 import { rescheduleNotifications } from '../common/agenda/notifications/schedule'
 import { now } from '../common/date'
 import { destr } from 'destr'
@@ -56,6 +59,25 @@ export const useAgendaStore = defineStore('agenda', {
             })
           ).files,
       )
+
+      const oldCache = this.agendaCache
+      const newCache = await updateAgendaCache(
+        oldCache,
+        newListDirCache.files,
+        async (path) => (await DirectoryPicker.readFile(path)).content,
+      )
+
+      rescheduleNotifications(newCache.cachedAgenda).then()
+
+      this.agendaCache = newCache
+      this.listDirCache = newListDirCache
+      this.updating = false
+    },
+    async refreshSingleFile(fileToRefresh: File) {
+      this.updating = true
+      this.timestamp = now().getTime()
+      const oldListDirCache = this.listDirCache
+      const newListDirCache = refreshSingleFile(oldListDirCache, fileToRefresh)
 
       const oldCache = this.agendaCache
       const newCache = await updateAgendaCache(
