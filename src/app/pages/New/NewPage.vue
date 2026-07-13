@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { useSettingsStore } from '@/app/store/settings'
 import Button from '@/components/Button.vue'
+import { DirectoryPicker } from '@/components/directoryPicker'
 import Flex from '@/components/Flex.vue'
 import Form from '@/components/forms/Form.vue'
 import FormGroup from '@/components/forms/FormGroup.vue'
 import Input from '@/components/forms/Input.vue'
 import Select from '@/components/forms/Select.vue'
+import AddIcon from '@/components/icons/AddIcon.vue'
 import ArrowBackIcon from '@/components/icons/ArrowBackIcon.vue'
 import PageContent from '@/components/PageContent.vue'
 import PageHeader from '@/components/PageHeader.vue'
@@ -16,10 +19,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { urgencyOptions } from './options'
 import { notEmpty, notEmptyIfEndTimePresent } from './validation'
-import AddIcon from '@/components/icons/AddIcon.vue'
-import { useAgendaStore } from '@/app/store/agenda'
-import { useSettingsStore } from '@/app/store/settings'
-import { DirectoryPicker } from '@/components/directoryPicker'
 
 const settingsStore = useSettingsStore()
 const router = useRouter()
