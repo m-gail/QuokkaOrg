@@ -50,7 +50,8 @@ public class DirectoryPickerPlugin extends Plugin {
         }
 
         var uri = result.getData().getData();
-        getActivity().getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        getActivity().getContentResolver().takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         String path = result.getData().getData().toString();
         JSObject directory = new JSObject();
