@@ -3,9 +3,10 @@ import { useAgendaStore } from '@/app/store/agenda'
 import { useSettingsStore } from '@/app/store/settings'
 import Button from '@/components/Button.vue'
 import Flex from '@/components/Flex.vue'
-import FileInput from '@/components/forms/FileInput.vue'
 import FormGroup from '@/components/forms/FormGroup.vue'
 import Input from '@/components/forms/Input.vue'
+import SystemDirectoryChooser from '@/components/forms/SystemDirectoryChooser.vue'
+import VueFileChooser from '@/components/forms/VueFileChooser.vue'
 import PageContent from '@/components/PageContent.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import PageTitle from '@/components/PageTitle.vue'
@@ -35,14 +36,18 @@ watch(newEventDefaultFile, () => {
   <PageContent>
     <Flex padding="4" col gap="10">
       <FormGroup title="File Settings">
-        <FileInput
+        <SystemDirectoryChooser
           label="Directory Path"
           :value="settings.directoryPath"
           @change="(value) => settings.setDirectoryPath(value)" />
         <Input label="Ignored Folders" v-model="ignoredFolders" />
       </FormGroup>
       <FormGroup title="Event creation">
-        <Input label="Default filename" v-model="newEventDefaultFile" />
+        <VueFileChooser
+          label="Default filename"
+          :value="settings.newEventDefaultFile"
+          @change="(value) => (newEventDefaultFile = value)"
+          :root-directory="settings.directoryPath" />
       </FormGroup>
       <FormGroup title="Caching">
         <Button grow type="red" @click="() => clearCache()">Reset cache</Button>

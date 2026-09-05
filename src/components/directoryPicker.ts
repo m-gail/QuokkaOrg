@@ -5,10 +5,16 @@ export interface File {
   relativePath: string
   lastModified: number
   name: string
+  type: 'FILE' | 'FOLDER'
 }
 
 export interface FilePath {
   path: string
+}
+
+export interface FolderPath {
+  root: string
+  directory: string
 }
 
 export interface IgnoredFolders {
@@ -26,7 +32,8 @@ export interface RelativeFileAppend {
 
 export interface DirectoryPickerPlugin {
   pickDirectory(): Promise<FilePath>
-  listDirectory(options: FilePath & IgnoredFolders): Promise<{ files: File[] }>
+  recursivelyListDirectory(options: FilePath & IgnoredFolders): Promise<{ files: File[] }>
+  listDirectory(options: FolderPath): Promise<{ files: File[] }>
   readFile(options: FilePath): Promise<FileContent>
   appendToFile(options: FilePath & RelativeFileAppend): Promise<File>
 }

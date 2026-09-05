@@ -53,7 +53,7 @@ export const useAgendaStore = defineStore('agenda', {
         oldListDirCache,
         async () =>
           (
-            await DirectoryPicker.listDirectory({
+            await DirectoryPicker.recursivelyListDirectory({
               path: directory,
               ignoredFolders: ignoredFolders,
             })

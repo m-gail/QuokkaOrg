@@ -20,6 +20,7 @@ import { useRouter } from 'vue-router'
 import { urgencyOptions } from './options'
 import { notEmpty, notEmptyIfEndTimePresent } from './validation'
 import { useAgendaStore } from '@/app/store/agenda'
+import VueFileChooser from '@/components/forms/VueFileChooser.vue'
 
 const settingsStore = useSettingsStore()
 const agendaStore = useAgendaStore()
@@ -72,11 +73,12 @@ async function create() {
     <Flex padding="4" col fill-parent>
       <Form :submitted="submitted">
         <Input label="Title" v-model="title" :error-text="titleError" />
-        <Input
+        <VueFileChooser
           label="File"
-          v-model="file"
-          :error-text="fileError"
-          :default-value="settingsStore.newEventDefaultFile" />
+          :value="file"
+          :root-directory="settingsStore.directoryPath"
+          @change="(value) => (file = value)"
+          :error-text="fileError" />
         <FormGroup title="Timestamp">
           <Input label="Date" v-model="date" type="date" :error-text="dateError" />
           <Input label="Start time" v-model="startTime" type="time" :error-text="startTimeError" />

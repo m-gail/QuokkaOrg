@@ -3,6 +3,7 @@ import type {
   File,
   FileContent,
   FilePath,
+  FolderPath,
   RelativeFileAppend,
 } from '@/components/directoryPicker'
 import { WebPlugin } from '@capacitor/core'
@@ -17,22 +18,91 @@ export class WebDirectoryPicker extends WebPlugin implements DirectoryPickerPlug
   async pickDirectory(): Promise<FilePath> {
     return { path: '/unknown' }
   }
-  async listDirectory(): Promise<{ files: File[] }> {
+  async listDirectory(options: FolderPath): Promise<{ files: File[] }> {
+    if (options.directory === '') {
+      return {
+        files: [
+          {
+            absolutePath: '/unknown/Subfolder1',
+            relativePath: 'Subfolder1',
+            name: 'Subfolder1',
+            lastModified: 4,
+            type: 'FOLDER',
+          },
+          {
+            absolutePath: '/unknown/Subfolder1',
+            relativePath: 'Subfolder2',
+            name: 'Subfolder2',
+            lastModified: 4,
+            type: 'FOLDER',
+          },
+          {
+            absolutePath: '/unknown/index.org',
+            relativePath: 'index.org',
+            name: 'index.org',
+            lastModified: 4,
+            type: 'FILE',
+          },
+          {
+            absolutePath: '/unknown/index2.org',
+            relativePath: 'index2.org',
+            name: 'index2.org',
+            lastModified: 3,
+            type: 'FILE',
+          },
+        ],
+      }
+    }
+    if (options.directory === 'Subfolder1') {
+      return {
+        files: [
+          {
+            absolutePath: '/unknown',
+            relativePath: '',
+            name: '..',
+            lastModified: 4,
+            type: 'FOLDER',
+          },
+          {
+            absolutePath: '/unknown/Subfolder1/Sub1.org',
+            relativePath: 'Subfolder1/Sub1.org',
+            name: 'Sub1.org',
+            lastModified: 4,
+            type: 'FILE',
+          },
+        ],
+      }
+    }
+    if (options.directory === 'Subfolder2') {
+      return {
+        files: [
+          {
+            absolutePath: '/unknown',
+            relativePath: '',
+            name: '..',
+            lastModified: 4,
+            type: 'FOLDER',
+          },
+          {
+            absolutePath: '/unknown/Subfolder2/Sub2.org',
+            relativePath: 'Subfolder2/Sub2.org',
+            name: 'Sub2.org',
+            lastModified: 4,
+            type: 'FILE',
+          },
+        ],
+      }
+    }
     return {
-      files: [
-        {
-          absolutePath: '/unknown/index.org',
-          relativePath: 'index.org',
-          name: 'index.org',
-          lastModified: 4,
-        },
-        {
-          absolutePath: '/unknown/index2.org',
-          relativePath: 'index2.org',
-          name: 'index2.org',
-          lastModified: 3,
-        },
-      ],
+      files: [],
+    }
+  }
+  async recursivelyListDirectory(): Promise<{ files: File[] }> {
+    const root = await this.listDirectory({ directory: '', root: '/unknown' })
+    const sub1 = await this.listDirectory({ directory: 'Sub1', root: '/unknown' })
+    const sub2 = await this.listDirectory({ directory: 'Sub2', root: '/unknown' })
+    return {
+      files: [...root.files, ...sub1.files, ...sub2.files].filter((file) => file.type === 'FILE'),
     }
   }
   async readFile(filePath: FilePath): Promise<FileContent> {
@@ -71,6 +141,10 @@ SCHEDULED: <2025-08-11 Wed 18:00>
 <2025-08-14 Wed 19:00>
 `,
       }
+    } else if (
+      ['/unknown/Subfolder1/Sub1.org', '/unknown/Subfolder2/Sub2.org'].includes(filePath.path)
+    ) {
+      return { content: '' }
     } else {
       throw new Error()
     }
@@ -87,6 +161,7 @@ ${options.content}
       relativePath: options.relativeSubPath,
       name: options.relativeSubPath,
       lastModified: 0,
+      type: 'FILE',
     }
   }
 }

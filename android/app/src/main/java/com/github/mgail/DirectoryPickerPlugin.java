@@ -24,7 +24,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -60,18 +62,11 @@ public class DirectoryPickerPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void listDirectory(PluginCall call) throws JSONException {
+    public void recursivelyListDirectory(PluginCall call) throws JSONException {
         List<String> ignoredFolders = call.getArray("ignoredFolders").toList();
         List<File> files = recursivelyListDirectory(call.getString("path"), ignoredFolders);
         JSObject ret = new JSObject();
-        ret.put("files", new JSArray(files.stream().map(file -> {
-            JSObject jsFile = new JSObject();
-            jsFile.put("absolutePath", file.absolutePath());
-            jsFile.put("relativePath", file.relativePath());
-            jsFile.put("lastModified", file.lastModified());
-            jsFile.put("name", file.name());
-            return jsFile;
-        }).collect(Collectors.toList())));
+        ret.put("files", new JSArray(files.stream().map(File::toJSObject).collect(Collectors.toList())));
         call.resolve(ret);
     }
 
@@ -102,9 +97,9 @@ public class DirectoryPickerPlugin extends Plugin {
                         if (ignoredFolders.contains(name)) {
                             continue;
                         }
-                        directoryQueue.add(new RecursiveQueueItem(addToRelativePath(currentItem.relativePath(), name), DocumentsContract.buildChildDocumentsUriUsingTree(rootContentUri, documentId)));
+                        directoryQueue.add(new RecursiveQueueItem(DocumentFileUtil.combinePaths(currentItem.relativePath(), name), DocumentsContract.buildChildDocumentsUriUsingTree(rootContentUri, documentId)));
                     } else if (name.endsWith(".org")) {
-                        files.add(new File(DocumentsContract.buildDocumentUriUsingTree(rootContentUri, documentId).toString(), addToRelativePath(currentItem.relativePath(), name), name, lastModified));
+                        files.add(new File(DocumentsContract.buildDocumentUriUsingTree(rootContentUri, documentId).toString(), DocumentFileUtil.combinePaths(currentItem.relativePath(), name), name, lastModified, "FILE"));
                     }
                 }
             }
@@ -112,11 +107,29 @@ public class DirectoryPickerPlugin extends Plugin {
         return files;
     }
 
-    private String addToRelativePath(String original, String toAdd) {
-        if (original.equals("")) {
-            return toAdd;
+    @PluginMethod
+    public void listDirectory(PluginCall call) throws JSONException {
+        String directory = call.getString("directory");
+        String root = call.getString("root");
+
+        DocumentFile documentDir = DocumentFileUtil.getFile(getContext(), root, directory);
+        List<File> files = Arrays.stream(documentDir.listFiles())
+                .map(df -> File.fromDocumentFile(df, directory))
+                .sorted(Comparator.comparing(File::type)
+                        .reversed()
+                        .thenComparing(File::name))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        if (!directory.equals("")) {
+            DocumentFile parent = documentDir.getParentFile();
+            files.add(0, File.fromDocumentFile(parent, DocumentFileUtil.directoryName(directory), ".."));
         }
-        return original + "/" + toAdd;
+
+        JSObject ret = new JSObject();
+        ret.put("files", new JSArray(files.stream()
+                .map(File::toJSObject)
+                .collect(Collectors.toList())));
+        call.resolve(ret);
     }
 
     @PluginMethod
@@ -137,24 +150,8 @@ public class DirectoryPickerPlugin extends Plugin {
         String contentToAppend = call.getString("content");
         String rootPath = call.getString("path");
         String relativeSubPath = call.getString("relativeSubPath");
-        List<String> relativeSubPathParts = Arrays.asList(relativeSubPath.split("/"));
 
-        DocumentFile currentFile = DocumentFile.fromTreeUri(getContext(), Uri.parse(rootPath));
-
-        for (int i = 0; i < relativeSubPathParts.size(); i++) {
-            boolean isLastPart = i == relativeSubPathParts.size() - 1;
-            String part = relativeSubPathParts.get(i);
-
-            DocumentFile nextFile = currentFile.findFile(part);
-            if (nextFile == null) {
-                if (isLastPart) {
-                    nextFile = currentFile.createFile("plain/text", part);
-                } else {
-                    nextFile = currentFile.createDirectory(part);
-                }
-            }
-            currentFile = nextFile;
-        }
+        DocumentFile currentFile = DocumentFileUtil.getFile(getContext(), rootPath, relativeSubPath);
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(getContext().getContentResolver().openOutputStream(currentFile.getUri(), "wa")))) {
             writer.append("\n");
@@ -166,6 +163,7 @@ public class DirectoryPickerPlugin extends Plugin {
         file.put("relativePath", relativeSubPath);
         file.put("lastModified", currentFile.lastModified());
         file.put("name", currentFile.getName());
+        file.put("type", "FILE");
         call.resolve(file);
     }
 }
