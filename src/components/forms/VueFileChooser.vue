@@ -4,6 +4,8 @@ import FileOpenIcon from '../icons/FileOpenIcon.vue'
 import FolderOpenIcon from '../icons/FolderOpenIcon.vue'
 import ChevronLeftIcon from '../icons/ChevronLeftIcon.vue'
 import { DirectoryPicker, type File } from '../directoryPicker'
+import LoadingSpinner from '../LoadingSpinner.vue'
+import Flex from '../Flex.vue'
 
 const { label, value, rootDirectory } = defineProps<{
   label: string
@@ -11,35 +13,36 @@ const { label, value, rootDirectory } = defineProps<{
   rootDirectory: string
 }>()
 const showDialog = ref(false)
-const currentDirectory = ref('')
+const loading = ref(false)
 const currentDirectoryContents = ref([] as File[])
 const emit = defineEmits<{ change: [value: string] }>()
 
 async function openDialog() {
   showDialog.value = true
-  currentDirectory.value = ''
+  await loadDirectory('')
 }
 
 async function handleClick(item: File) {
   if (item.type === 'FOLDER') {
-    currentDirectory.value = item.relativePath
+    await loadDirectory(item.relativePath)
   } else {
     emit('change', item.relativePath)
     showDialog.value = false
   }
 }
 
-watch(
-  currentDirectory,
-  async () => {
-    const files = await DirectoryPicker.listDirectory({
-      root: rootDirectory,
-      directory: currentDirectory.value,
-    })
-    currentDirectoryContents.value = files.files
-  },
-  { immediate: true },
-)
+async function loadDirectory(directory: string) {
+  if (rootDirectory === '') {
+    return
+  }
+  loading.value = true
+  const files = await DirectoryPicker.listDirectory({
+    root: rootDirectory,
+    directory: directory,
+  })
+  currentDirectoryContents.value = files.files
+  loading.value = false
+}
 </script>
 <template>
   <dialog class="max" :class="{ active: showDialog }">
@@ -52,7 +55,8 @@ watch(
       </nav>
     </header>
     <div class="space"></div>
-    <ul class="list border">
+    <Flex center v-if="loading"><LoadingSpinner /></Flex>
+    <ul class="list border" v-else>
       <li
         v-for="item of currentDirectoryContents"
         :key="item.relativePath"
