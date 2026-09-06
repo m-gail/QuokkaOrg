@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { cls } from '@/app/common/classes'
 import { computed, type Component } from 'vue'
+import LoadingSpinner from './LoadingSpinner.vue'
 
-const { type = 'normal', icon, grow } = defineProps<{
+const {
+  type = 'normal',
+  icon,
+  grow,
+  loading = false,
+} = defineProps<{
   type?: 'normal' | 'clear' | 'red'
-  grow?: boolean;
+  grow?: boolean
   icon?: Component
+  loading?: boolean
 }>()
 const emit = defineEmits<{ click: [] }>()
 
@@ -15,8 +22,9 @@ const classes = computed(() =>
 </script>
 
 <template>
-  <button :class="classes" @click="() => emit('click')">
-    <i v-if="icon != null">
+  <button :class="classes" @click="() => emit('click')" :disabled="loading">
+    <LoadingSpinner v-if="loading" />
+    <i v-else-if="icon != null">
       <component :is="icon"></component>
     </i>
     <span>

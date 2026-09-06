@@ -8,6 +8,8 @@ import type {
 } from '@/components/directoryPicker'
 import { WebPlugin } from '@capacitor/core'
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
 /**
  * Plugin for testing the app on web
  */
@@ -150,6 +152,7 @@ SCHEDULED: <2025-08-11 Wed 18:00>
     }
   }
   async appendToFile(options: FilePath & RelativeFileAppend): Promise<File> {
+    await sleep(500)
     console.log(`-- Appending --
 ${options.path}
 ${options.relativeSubPath}

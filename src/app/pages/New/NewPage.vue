@@ -26,6 +26,8 @@ const settingsStore = useSettingsStore()
 const agendaStore = useAgendaStore()
 const router = useRouter()
 
+const loading = ref(false)
+
 const title = ref('')
 const titleError = notEmpty(title)
 const file = ref(settingsStore.newEventDefaultFile)
@@ -47,6 +49,7 @@ async function create() {
   ) {
     return
   }
+  loading.value = true
   const event = serializeEvent({
     title: title.value.trim(),
     urgency: urgency.value as Urgency,
@@ -60,6 +63,7 @@ async function create() {
     content: event,
   })
   await agendaStore.refreshSingleFile(created)
+  loading.value = false
   router.push('/upcoming')
 }
 </script>
@@ -86,7 +90,7 @@ async function create() {
           <Select label="Urgency" v-model="urgency" :options="urgencyOptions" />
         </FormGroup>
         <Text grow></Text>
-        <Button :icon="AddIcon" @click="create">Create</Button>
+        <Button :icon="AddIcon" @click="create" :loading="loading">Create</Button>
       </Form>
     </Flex>
   </PageContent>
