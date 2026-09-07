@@ -12,6 +12,10 @@ import java.util.stream.Collectors;
 
 public class DocumentFileUtil {
     public static DocumentFile getFile(Context context, String rootPath, String relativePath) {
+        return getFile(context, rootPath, relativePath, true);
+    }
+
+    public static DocumentFile getFile(Context context, String rootPath, String relativePath, boolean createMissing) {
         DocumentFile currentFile = DocumentFile.fromTreeUri(context, Uri.parse(rootPath));
         if (relativePath.equals("")) {
             return currentFile;
@@ -24,6 +28,9 @@ public class DocumentFileUtil {
 
             DocumentFile nextFile = currentFile.findFile(part);
             if (nextFile == null) {
+                if (!createMissing) {
+                    return null;
+                }
                 if (isLastPart) {
                     nextFile = currentFile.createFile("plain/text", part);
                 } else {

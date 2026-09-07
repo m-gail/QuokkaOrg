@@ -6,10 +6,16 @@ import { formSubmitted } from './inject'
 const {
   label,
   type = 'text',
+  variant = 'border',
+  round = true,
+  grow = false,
   errorText,
 } = defineProps<{
   label: string
   type?: 'text' | 'time' | 'date'
+  variant?: 'border' | 'clear'
+  round?: boolean
+  grow?: boolean
   errorText?: string
 }>()
 const model = defineModel<string>()
@@ -18,7 +24,15 @@ const submitted = inject(formSubmitted)
 
 const showError = computed(() => errorText !== undefined && (dirty.value || submitted?.value))
 
-const classes = computed(() => cls(['field border label round', showError.value && 'invalid']))
+const classes = computed(() =>
+  cls([
+    'field label',
+    showError.value && 'invalid',
+    variant === 'border' && 'border',
+    round && 'round',
+    grow && 'grow',
+  ]),
+)
 
 watch(model, (newValue) => {
   if ((newValue?.length ?? 0) > 0) {

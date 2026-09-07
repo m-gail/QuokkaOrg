@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import FileOpenIcon from '../icons/FileOpenIcon.vue'
 import FolderOpenIcon from '../icons/FolderOpenIcon.vue'
 import ChevronLeftIcon from '../icons/ChevronLeftIcon.vue'
 import { DirectoryPicker, type File } from '../directoryPicker'
 import LoadingSpinner from '../LoadingSpinner.vue'
 import Flex from '../Flex.vue'
+import Input from './Input.vue'
+import Button from '../Button.vue'
+import Text from '../Text.vue'
+import CreateFolderIcon from '../icons/CreateFolderIcon.vue'
+import CreateFileIcon from '../icons/CreateFileIcon.vue'
 
 const { label, value, rootDirectory } = defineProps<{
   label: string
@@ -14,7 +19,9 @@ const { label, value, rootDirectory } = defineProps<{
 }>()
 const showDialog = ref(false)
 const loading = ref(false)
+const currentDirectory = ref('')
 const currentDirectoryContents = ref([] as File[])
+const newValue = ref('')
 const emit = defineEmits<{ change: [value: string] }>()
 
 async function openDialog() {
@@ -36,12 +43,29 @@ async function loadDirectory(directory: string) {
     return
   }
   loading.value = true
+  currentDirectory.value = directory
   const files = await DirectoryPicker.listDirectory({
     root: rootDirectory,
     directory: directory,
   })
+  newValue.value = ''
   currentDirectoryContents.value = files.files
   loading.value = false
+}
+function combinePaths(directory: string, file: string) {
+  if (directory === '') {
+    return file
+  }
+  if (!directory.endsWith('/')) {
+    return directory + '/' + file
+  }
+  return directory + file
+}
+function makeOrgFile(path: string) {
+  if (path.endsWith('.org')) {
+    return path
+  }
+  return path + '.org'
 }
 </script>
 <template>
@@ -56,16 +80,46 @@ async function loadDirectory(directory: string) {
     </header>
     <div class="space"></div>
     <Flex center v-if="loading"><LoadingSpinner /></Flex>
-    <ul class="list border" v-else>
-      <li
-        v-for="item of currentDirectoryContents"
-        :key="item.relativePath"
-        class="wave"
-        @click="handleClick(item)">
-        <i v-if="item.type === 'FOLDER'" class="primary-text"><FolderOpenIcon /></i>
-        {{ item.name }}
-      </li>
-    </ul>
+    <Flex col v-else>
+      <Text weight="bold" size="lg">{{ currentDirectory }}</Text>
+      <ul class="list border">
+        <li
+          v-for="item of currentDirectoryContents"
+          :key="item.relativePath"
+          class="wave"
+          @click="handleClick(item)">
+          <i v-if="item.type === 'FOLDER'" class="primary-text"><FolderOpenIcon /></i>
+          {{ item.name }}
+        </li>
+        <li class="no-padding">
+          <Input v-model="newValue" label="New" variant="clear" :round="false" grow />
+          <Button
+            type="clear"
+            :icon="CreateFolderIcon"
+            @click="
+              handleClick({
+                type: 'FOLDER',
+                absolutePath: '',
+                relativePath: combinePaths(currentDirectory, newValue),
+                lastModified: -1,
+                name: newValue,
+              })
+            " />
+          <Button
+            type="clear"
+            :icon="CreateFileIcon"
+            @click="
+              handleClick({
+                type: 'FILE',
+                absolutePath: '',
+                relativePath: combinePaths(currentDirectory, makeOrgFile(newValue)),
+                lastModified: -1,
+                name: makeOrgFile(newValue),
+              })
+            " />
+        </li>
+      </ul>
+    </Flex>
   </dialog>
   <div class="row no-space">
     <button class="left-round large fill" @click="openDialog">

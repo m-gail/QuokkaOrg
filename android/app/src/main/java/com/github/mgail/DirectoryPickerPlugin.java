@@ -112,17 +112,21 @@ public class DirectoryPickerPlugin extends Plugin {
         String directory = call.getString("directory");
         String root = call.getString("root");
 
-        DocumentFile documentDir = DocumentFileUtil.getFile(getContext(), root, directory);
-        List<File> files = Arrays.stream(documentDir.listFiles())
-                .map(df -> File.fromDocumentFile(df, directory))
-                .sorted(Comparator.comparing(File::type)
-                        .reversed()
-                        .thenComparing(File::name))
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        if (!directory.equals("")) {
-            DocumentFile parent = documentDir.getParentFile();
-            files.add(0, File.fromDocumentFile(parent, DocumentFileUtil.directoryName(directory), ".."));
+        DocumentFile documentDir = DocumentFileUtil.getFile(getContext(), root, directory, false);
+        List<File> files;
+        if (documentDir == null) {
+            files = List.of(new File("", DocumentFileUtil.directoryName(directory), "..", -1, "FOLDER"));
+        } else {
+            files = Arrays.stream(documentDir.listFiles())
+                    .map(df -> File.fromDocumentFile(df, directory))
+                    .sorted(Comparator.comparing(File::type)
+                            .reversed()
+                            .thenComparing(File::name))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            if (!directory.isEmpty()) {
+                DocumentFile parent = documentDir.getParentFile();
+                files.add(0, File.fromDocumentFile(parent, DocumentFileUtil.directoryName(directory), ".."));
+            }
         }
 
         JSObject ret = new JSObject();
