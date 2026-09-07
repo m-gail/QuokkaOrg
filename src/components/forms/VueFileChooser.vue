@@ -82,7 +82,7 @@ function makeOrgFile(path: string) {
     <Flex center v-if="loading"><LoadingSpinner /></Flex>
     <Flex col v-else>
       <Text weight="bold" size="lg">{{ currentDirectory }}</Text>
-      <ul class="list border">
+      <ul class="list border" style="margin-bottom: 64px">
         <li
           v-for="item of currentDirectoryContents"
           :key="item.relativePath"
