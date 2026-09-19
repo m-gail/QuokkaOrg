@@ -12,7 +12,7 @@ export type AgendaEvent = {
   fileRelativePath: string
   breadcrumbs: string[]
   urgency: Urgency
-  repeat: string | undefined
+  repeat?: string
 }
 
 export type AgendaEventCreate = {

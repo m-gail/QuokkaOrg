@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
-import { filterAgenda } from './filterAgenda'
+import { filterAgenda, type AgendaDayFilter } from './filterAgenda'
 import type { Agenda, AgendaEvent } from '../types'
+import { dateFromEvent } from '../../app/common/date'
 
 const EVENT_1: AgendaEvent = {
   breadcrumbs: ['Event 1'],
@@ -24,6 +25,11 @@ const DAY_1 = '2025-12-10'
 
 const DAY_2 = '2025-12-11'
 
+const DAY_FILTER: AgendaDayFilter = {
+  startDate: dateFromEvent(DAY_1),
+  endDate: dateFromEvent(DAY_2),
+}
+
 const TEST_AGENDA: Agenda = {
   days: [
     {
@@ -38,7 +44,9 @@ const TEST_AGENDA: Agenda = {
 }
 
 test('dayFilter removes full day', () => {
-  const filtered = filterAgenda(TEST_AGENDA, { dayFilter: (day) => day.date !== DAY_2 })
+  const filtered = filterAgenda(TEST_AGENDA, {
+    dayFilter: { startDate: dateFromEvent(DAY_1), endDate: dateFromEvent(DAY_1) },
+  })
 
   expect(filtered).toEqual({
     days: [
@@ -53,6 +61,7 @@ test('dayFilter removes full day', () => {
 test('eventFilter removes single event', () => {
   const filtered = filterAgenda(TEST_AGENDA, {
     eventFilter: (event) => event.urgency !== 'DEADLINE',
+    dayFilter: DAY_FILTER,
   })
 
   expect(filtered).toEqual({
@@ -72,6 +81,7 @@ test('eventFilter removes single event', () => {
 test('eventFilter removes day if no events remain', () => {
   const filtered = filterAgenda(TEST_AGENDA, {
     eventFilter: (event) => event.urgency === 'NONE',
+    dayFilter: DAY_FILTER,
   })
 
   expect(filtered).toEqual({
