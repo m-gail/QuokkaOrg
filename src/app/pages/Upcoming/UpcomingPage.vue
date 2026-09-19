@@ -19,7 +19,6 @@ import PageContent from '@/components/PageContent.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import PageTitle from '@/components/PageTitle.vue'
 import Text from '@/components/Text.vue'
-import { rangeFilter } from '@/org/filter/generic'
 import type { Urgency } from '@/org/types'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -34,7 +33,7 @@ const endDate = ref<Date>(now())
 const filter = ref<Urgency | undefined>(undefined)
 const agenda = computed(() =>
   agendaStore.getAgenda({
-    dayFilter: rangeFilter(startDate.value, endDate.value),
+    dayFilter: { startDate: startDate.value, endDate: endDate.value },
     eventFilter: filter.value === undefined ? undefined : (event) => event.urgency === filter.value,
   }),
 )

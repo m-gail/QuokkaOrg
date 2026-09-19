@@ -28,6 +28,7 @@ export async function parseSingleFile(relativePath: string, content: string): Pr
       fileRelativePath: relativePath,
       breadcrumbs: getBreadcrumbs(timestampNode),
       urgency: getUrgency(timestampNode),
+      repeat: getRepeat(timestampNode)
     })
   }
 
@@ -78,6 +79,10 @@ function getUrgency(timestampNode: Node): Urgency {
     currentSibling = currentSibling.previousSibling
   }
   return 'NONE'
+}
+
+function getRepeat(timestampNode: Node): string | undefined {
+  return timestampNode.descendantsOfType('repeat')[0]?.text
 }
 
 async function createOrgParser(): Promise<Parser> {

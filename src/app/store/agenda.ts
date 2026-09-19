@@ -4,13 +4,11 @@ import { filterAgenda, type AgendaFilter } from '@/org/filter/filterAgenda'
 import { sortAgenda } from '@/org/sort'
 import { DirectoryPicker, type File } from '@/components/directoryPicker'
 import { updateAgendaCache } from '../common/agenda/cache/updateAgendaCache'
-import {
-  refreshSingleFile,
-  updateListDirCache,
-} from '../common/agenda/cache/updateListDirCache'
+import { refreshSingleFile, updateListDirCache } from '../common/agenda/cache/updateListDirCache'
 import { rescheduleNotifications } from '../common/agenda/notifications/schedule'
 import { now } from '../common/date'
 import { destr } from 'destr'
+import { expandRepeats } from '@/org/repeat/expandRepeats'
 
 type AgendaStore = {
   listDirCache: ListDirCache | null
@@ -36,8 +34,10 @@ export const useAgendaStore = defineStore('agenda', {
   state: () => getDefaultState(),
   getters: {
     getAgenda: (state) => {
-      return (filters?: AgendaFilter) => {
-        return sortAgenda(filterAgenda(state.agendaCache.cachedAgenda, filters))
+      return (filters: AgendaFilter) => {
+        return sortAgenda(
+          filterAgenda(expandRepeats(state.agendaCache.cachedAgenda, filters), filters),
+        )
       }
     },
   },

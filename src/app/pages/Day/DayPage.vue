@@ -19,7 +19,6 @@ import PageContent from '@/components/PageContent.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import PageTitle from '@/components/PageTitle.vue'
 import Text from '@/components/Text.vue'
-import { rangeFilter } from '@/org/filter/generic'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -40,7 +39,7 @@ function navigateNext() {
 
 const agenda = computed(() => {
   const [rangeStart, rangeEnd] = getDateRange(date.value, 1)
-  return agendaStore.getAgenda({ dayFilter: rangeFilter(rangeStart, rangeEnd) })
+  return agendaStore.getAgenda({ dayFilter: { startDate: rangeStart, endDate: rangeEnd } })
 })
 const events = computed(() => agenda.value?.days[0]?.events ?? [])
 watch(

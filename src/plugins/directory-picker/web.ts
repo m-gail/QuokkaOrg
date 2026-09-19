@@ -141,6 +141,14 @@ SCHEDULED: <2025-08-11 Wed 18:00>
         content: `
 * Unrelated
 <2025-08-14 Wed 19:00>
+* Bi-Monthly Repeat
+<2026-09-17 Thu 14:00 +2m>
+* Yearly Repeat
+<2003-09-15 Tue 14:00 +1y>
+* Tri-Daily Repeat
+<2026-09-01 Tue 14:00 +3d>
+* Friday Repeat
+<2026-09-04 Fri 14:00 +1w>
 `,
       }
     } else if (

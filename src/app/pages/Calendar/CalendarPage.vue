@@ -41,18 +41,25 @@ function chooseDay(day: string) {
 
 const events: ComputedRef<CalendarEvent[]> = computed(
   () =>
-    agendaStore.getAgenda().days.flatMap((day) =>
-      day.events.map((event) => ({
-        day: day.date,
-        title: event.breadcrumbs[event.breadcrumbs.length - 1],
-        color:
-          event.urgency === 'DEADLINE'
-            ? 'red'
-            : event.urgency === 'SCHEDULED'
-              ? 'primary'
-              : 'secondary',
-      })),
-    ) ?? [],
+    agendaStore
+      .getAgenda({
+        dayFilter: {
+          startDate: getPreviousMonth(currentPage.value),
+          endDate: getNextMonth(getNextMonth(currentPage.value)),
+        },
+      })
+      .days.flatMap((day) =>
+        day.events.map((event) => ({
+          day: day.date,
+          title: event.breadcrumbs[event.breadcrumbs.length - 1],
+          color:
+            event.urgency === 'DEADLINE'
+              ? 'red'
+              : event.urgency === 'SCHEDULED'
+                ? 'primary'
+                : 'secondary',
+        })),
+      ) ?? [],
 )
 
 onMounted(async () => {

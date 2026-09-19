@@ -19,9 +19,9 @@ export function getPreviousDay(date: Date, count: number = 1) {
   return previousDay
 }
 
-export function getNextMonth(date: Date) {
+export function getNextMonth(date: Date, count: number = 1) {
   const nextDay = new Date(date)
-  nextDay.setMonth(nextDay.getMonth() + 1)
+  nextDay.setMonth(nextDay.getMonth() + count)
   return nextDay
 }
 
@@ -29,6 +29,16 @@ export function getPreviousMonth(date: Date) {
   const previousDay = new Date(date)
   previousDay.setMonth(previousDay.getMonth() - 1)
   return previousDay
+}
+
+export function getNextWeek(date: Date, count: number = 1) {
+  return getNextDay(date, 7 * count)
+}
+
+export function getNextYear(date: Date, count: number = 1) {
+  const nextYear = new Date(date)
+  nextYear.setFullYear(nextYear.getFullYear() + count)
+  return nextYear
 }
 
 export function getStartOfMonth(date: Date) {
