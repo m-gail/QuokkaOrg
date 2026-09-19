@@ -1,24 +1,22 @@
 import {
   dateFromEvent,
-  getNextMonth,
   formatIsoDate,
+  getNextDay,
+  getNextMonth,
   getNextWeek,
   getNextYear,
-  getNextDay,
 } from '@/app/common/date'
 import type { AgendaFilter } from '../filter/filterAgenda'
 import { mergeAgendas } from '../merge'
-import type { Agenda } from '../types'
-import { sortAgenda } from '../sort'
+import type { Agenda, AgendaRepeat } from '../types'
 
 export function expandRepeats(fullAgenda: Agenda, filter: AgendaFilter): Agenda {
   let filteredAgenda = fullAgenda
   for (const day of fullAgenda.days) {
     const date = dateFromEvent(day.date)
     for (const event of day.events) {
-      const repeat = parseRepeat(event.repeat)
       if (
-        repeat === undefined ||
+        event.repeat === undefined ||
         date >= filter.dayFilter.endDate ||
         filter.eventFilter?.(event) === false
       ) {
@@ -26,7 +24,7 @@ export function expandRepeats(fullAgenda: Agenda, filter: AgendaFilter): Agenda 
       }
       let currentTimeStamp = dateFromEvent(day.date, event.time)
       while (currentTimeStamp <= filter.dayFilter.endDate) {
-        currentTimeStamp = nextTimeStamp(currentTimeStamp, repeat)
+        currentTimeStamp = nextTimeStamp(currentTimeStamp, event.repeat)
         if (
           filter.dayFilter.startDate <= currentTimeStamp &&
           currentTimeStamp <= filter.dayFilter.endDate
@@ -41,7 +39,7 @@ export function expandRepeats(fullAgenda: Agenda, filter: AgendaFilter): Agenda 
   return filteredAgenda
 }
 
-function nextTimeStamp(currentTimeStamp: Date, [step, unit]: [number, string]): Date {
+function nextTimeStamp(currentTimeStamp: Date, { step, unit }: AgendaRepeat): Date {
   switch (unit) {
     case 'd':
       return getNextDay(currentTimeStamp, step)
@@ -53,19 +51,4 @@ function nextTimeStamp(currentTimeStamp: Date, [step, unit]: [number, string]): 
       return getNextYear(currentTimeStamp, step)
   }
   return currentTimeStamp
-}
-
-function parseRepeat(repeat?: string): [number, string] | undefined {
-  if (repeat == undefined) {
-    return undefined
-  }
-  const groups = /.*(?<step>\d+)(?<unit>\w).*/g.exec(repeat)?.groups
-  if (groups == null) {
-    return undefined
-  }
-  const step = parseInt(groups.step)
-  if (step <= 0 || !['w', 'm', 'y', 'd'].includes(groups.unit)) {
-    return undefined
-  }
-  return [step, groups.unit]
 }

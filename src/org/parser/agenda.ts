@@ -23,12 +23,20 @@ export async function parseSingleFile(relativePath: string, content: string): Pr
       days.set(date, { date, events: [] })
     }
     const agendaDay = days.get(date)
+    const repeat = parseRepeat(getRepeat(timestampNode))
     agendaDay?.events.push({
       time: getTime(timestampNode),
       fileRelativePath: relativePath,
       breadcrumbs: getBreadcrumbs(timestampNode),
       urgency: getUrgency(timestampNode),
-      repeat: getRepeat(timestampNode)
+      repeat:
+        repeat != null
+          ? {
+              step: repeat[0],
+              unit: repeat[1],
+              initialDate: date,
+            }
+          : undefined,
     })
   }
 
@@ -83,6 +91,21 @@ function getUrgency(timestampNode: Node): Urgency {
 
 function getRepeat(timestampNode: Node): string | undefined {
   return timestampNode.descendantsOfType('repeat')[0]?.text
+}
+
+function parseRepeat(repeat?: string): [number, string] | undefined {
+  if (repeat == undefined) {
+    return undefined
+  }
+  const groups = /.*(?<step>\d+)(?<unit>\w).*/g.exec(repeat)?.groups
+  if (groups == null) {
+    return undefined
+  }
+  const step = parseInt(groups.step)
+  if (step <= 0 || !['w', 'm', 'y', 'd'].includes(groups.unit)) {
+    return undefined
+  }
+  return [step, groups.unit]
 }
 
 async function createOrgParser(): Promise<Parser> {
