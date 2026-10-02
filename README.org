@@ -3,6 +3,8 @@
 
 It parses all org-mode files from a directory of your choice, extracts timestamps and presents them in a simple, mobile-optimized interface.
 
+#+html: <a href='https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%20%22com.github.mgail.quokkaorg%22%2C%20%22url%22%3A%20%22https%3A%2F%2Fgithub.com%2Fm-gail%2FQuokkaOrg%22%2C%20%22author%22%3A%20%22m-gail%22%2C%20%22name%22%3A%20%22QuokkaOrg%22%7D'><img src='./.github/badge_obtainium.png' height='60'></a>
+
 #+html: <br>
 
 * ✨ Features
