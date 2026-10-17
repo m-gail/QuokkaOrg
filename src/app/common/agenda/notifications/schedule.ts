@@ -1,10 +1,11 @@
+import { expandRepeats } from '@/org/repeat/expandRepeats'
 import type { Agenda, AgendaEvent } from '@/org/types'
 import {
   LocalNotifications,
   type LocalNotificationSchema,
   type PendingLocalNotificationSchema,
 } from '@capacitor/local-notifications'
-import { dateFromEvent, getNextDay, getPreviousDay, now } from '../../date'
+import { dateFromEvent, getNextDay, getNextMonth, getPreviousDay, now } from '../../date'
 
 type SchedulableEvent = AgendaEvent & {
   internalId: string
@@ -19,7 +20,11 @@ export async function rescheduleNotifications(agenda: Agenda) {
 }
 
 function getAllEventsAsSchedulable(agenda: Agenda): SchedulableEvent[] {
-  return agenda.days.flatMap((day) =>
+  const startDate = now()
+  const toSchedule = expandRepeats(agenda, {
+    dayFilter: { startDate: startDate, endDate: getNextMonth(startDate, 2) },
+  })
+  return toSchedule.days.flatMap((day) =>
     day.events.map((event) => ({
       internalId: generateInternalId(event, day.date),
       date: day.date,
