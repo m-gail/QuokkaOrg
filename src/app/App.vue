@@ -6,15 +6,18 @@ import SettingsIcon from '@/components/icons/SettingsIcon.vue'
 import { MaterialColor } from '@/components/materialColor'
 import { LocalNotifications } from '@capacitor/local-notifications'
 import { onMounted } from 'vue'
+import { formatIsoDate, getStartOfMonth, now } from './common/date'
+
+const calendarPage = formatIsoDate(getStartOfMonth(now()))
 
 const navbarRoutes = [
   { text: 'Upcoming', to: '/upcoming', icon: InboxIcon },
-  { text: 'Calendar', to: '/calendar', icon: CalendarIcon },
+  { text: 'Calendar', to: `/calendar/month/${calendarPage}`, icon: CalendarIcon },
   { text: 'Settings', to: '/settings', icon: SettingsIcon },
 ]
 
 onMounted(async () => {
-  await ui("theme", (await MaterialColor.getSourceColor()).source)
+  await ui('theme', (await MaterialColor.getSourceColor()).source)
   const permissionResult = await LocalNotifications.checkPermissions()
   if (permissionResult.display != 'granted') {
     await LocalNotifications.requestPermissions()
@@ -27,5 +30,4 @@ onMounted(async () => {
   <Dock :links="navbarRoutes" />
 </template>
 
-<style>
-</style>
+<style></style>

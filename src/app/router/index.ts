@@ -12,7 +12,7 @@ const router = createRouter({
     { path: '/', component: IndexPage },
     { path: '/upcoming', component: UpcomingPage },
     {
-      path: '/calendar',
+      path: '/calendar/month/:month',
       component: CalendarPage,
     },
     {

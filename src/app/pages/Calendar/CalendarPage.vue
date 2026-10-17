@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
+  formatIsoDate,
   formatMonthAndYear,
   getNextMonth,
   getPreviousMonth,
   getStartOfMonth,
-  now,
 } from '@/app/common/date'
 import { useAgendaStore } from '@/app/store/agenda'
 import { useSettingsStore } from '@/app/store/settings'
@@ -18,21 +18,24 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import PageContent from '@/components/PageContent.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import PageTitle from '@/components/PageTitle.vue'
-import { onMounted, computed, ref, type ComputedRef } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, type ComputedRef } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const settings = useSettingsStore()
 const agendaStore = useAgendaStore()
 
 const router = useRouter()
-const currentPage = ref(getStartOfMonth(now()))
+const route = useRoute()
+const currentPage = computed(() =>
+  getStartOfMonth(new Date(Date.parse(route.params.month as string))),
+)
 
 function previousPage() {
-  currentPage.value = getPreviousMonth(currentPage.value)
+  router.push(`/calendar/month/${formatIsoDate(getPreviousMonth(currentPage.value))}`)
 }
 
 function nextPage() {
-  currentPage.value = getNextMonth(currentPage.value)
+  router.push(`/calendar/month/${formatIsoDate(getNextMonth(currentPage.value))}`)
 }
 
 function chooseDay(day: string) {
