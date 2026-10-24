@@ -11,9 +11,24 @@ import { formatIsoDate, getStartOfMonth, now } from './common/date'
 const calendarPage = formatIsoDate(getStartOfMonth(now()))
 
 const navbarRoutes = [
-  { text: 'Upcoming', to: '/upcoming', icon: InboxIcon },
-  { text: 'Calendar', to: `/calendar/month/${calendarPage}`, icon: CalendarIcon },
-  { text: 'Settings', to: '/settings', icon: SettingsIcon },
+  {
+    text: 'Upcoming',
+    basePath: '/upcoming',
+    to: '/upcoming',
+    icon: InboxIcon,
+  },
+  {
+    text: 'Calendar',
+    basePath: '/calendar',
+    to: `/calendar/month/${calendarPage}`,
+    icon: CalendarIcon,
+  },
+  {
+    text: 'Settings',
+    basePath: '/settings',
+    to: '/settings',
+    icon: SettingsIcon,
+  },
 ]
 
 onMounted(async () => {

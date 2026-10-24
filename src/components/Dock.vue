@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, useTemplateRef, watch, type Component } from 'vue'
+import { onBeforeUnmount, onMounted, useTemplateRef, type Component } from 'vue'
 import DockItem from './DockItem.vue'
 import { useUIStore } from './uiStore'
 
 const uiStore = useUIStore()
 const navRef = useTemplateRef('nav')
-const { links } = defineProps<{ links: { text: string; to: string; icon: Component }[] }>()
+const { links } = defineProps<{
+  links: { text: string; basePath: string; to: string; icon: Component }[]
+}>()
 
 let observer: ResizeObserver
 
