@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
 import ButtonBase from '@/components/ButtonBase.vue'
-import Chip from '@/components/Chip.vue'
 import Flex from '@/components/Flex.vue'
 import RepeatIcon from '@/components/icons/RepeatIcon.vue'
 import ListItem from '@/components/ListItem.vue'
