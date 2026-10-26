@@ -55,7 +55,7 @@ const hasEntries = computed(() => events.value.length > 0)
 <template>
   <PageHeader>
     <PageTitle>{{ formatDateWithWeekDay(date) }}</PageTitle>
-    <LoadingSpinner v-if="agendaStore.updating" />
+    <LoadingSpinner v-if="agendaStore.updating" :value="agendaStore.progressEstimate" />
     <Button type="clear" :icon="ChevronLeftIcon" @click="navigatePrevious"></Button>
     <Button type="clear" :icon="ChevronRightIcon" @click="navigateNext"></Button>
   </PageHeader>

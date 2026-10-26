@@ -48,7 +48,7 @@ onMounted(async () => {
 <template>
   <PageHeader>
     <PageTitle>{{ formatDate(startDate) }} - {{ formatDate(endDate) }}</PageTitle>
-    <LoadingSpinner v-if="agendaStore.updating" />
+    <LoadingSpinner v-if="agendaStore.updating" :value="agendaStore.progressEstimate" />
     <MenuButton>
       <template #button>
         <Button type="clear" :icon="FilterIcon" />

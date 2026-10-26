@@ -8,6 +8,7 @@ export async function updateAgendaCache(
   cache: AgendaCache,
   listDirResult: File[],
   readFile: (file: FilePath) => Promise<string>,
+  onProgressUpdate: (progressEstimate: number) => void,
 ): Promise<AgendaCache> {
   let newCache = cache
 
@@ -17,11 +18,15 @@ export async function updateAgendaCache(
     }
   }
 
+  let progress = 0
+  const total = listDirResult.length
   for (const file of listDirResult) {
     if (isOutdated(file, newCache)) {
       newCache = evict(file, newCache)
       newCache = await addFileToCache(file, newCache, readFile)
     }
+    progress++
+    onProgressUpdate((progress / total) * 100)
   }
 
   return newCache

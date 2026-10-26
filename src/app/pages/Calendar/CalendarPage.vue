@@ -73,7 +73,7 @@ onMounted(async () => {
 <template>
   <PageHeader>
     <PageTitle>{{ formatMonthAndYear(currentPage) }}</PageTitle>
-    <LoadingSpinner v-if="agendaStore.updating" />
+    <LoadingSpinner v-if="agendaStore.updating" :value="agendaStore.progressEstimate" />
     <Button type="clear" :icon="ChevronLeftIcon" @click="previousPage" />
     <Button type="clear" :icon="ChevronRightIcon" @click="nextPage" />
   </PageHeader>

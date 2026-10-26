@@ -15,6 +15,7 @@ type AgendaStore = {
   agendaCache: AgendaCache
   timestamp: number
   updating: boolean
+  progressEstimate: number
   storeVersion: number
 }
 
@@ -27,6 +28,7 @@ function getDefaultState(): AgendaStore {
     listDirCache: null,
     timestamp: 0,
     updating: false,
+    progressEstimate: 0,
   }
 }
 
@@ -46,6 +48,7 @@ export const useAgendaStore = defineStore('agenda', {
       if ((!isOutdated(this.timestamp) || directory == '') && !force) {
         return
       }
+      this.progressEstimate = 1
       this.updating = true
       this.timestamp = now().getTime()
       const oldListDirCache = this.listDirCache
@@ -59,12 +62,14 @@ export const useAgendaStore = defineStore('agenda', {
             })
           ).files,
       )
+      this.progressEstimate = 50
 
       const oldCache = this.agendaCache
       const newCache = await updateAgendaCache(
         oldCache,
         newListDirCache.files,
         async (path) => (await DirectoryPicker.readFile(path)).content,
+        (progressEstimate) => (this.progressEstimate = 50 + 0.5 * progressEstimate),
       )
 
       rescheduleNotifications(newCache.cachedAgenda).then()
@@ -74,16 +79,19 @@ export const useAgendaStore = defineStore('agenda', {
       this.updating = false
     },
     async refreshSingleFile(fileToRefresh: File) {
+      this.progressEstimate = 1
       this.updating = true
       this.timestamp = now().getTime()
       const oldListDirCache = this.listDirCache
       const newListDirCache = refreshSingleFile(oldListDirCache, fileToRefresh)
+      this.progressEstimate = 50
 
       const oldCache = this.agendaCache
       const newCache = await updateAgendaCache(
         oldCache,
         newListDirCache.files,
         async (path) => (await DirectoryPicker.readFile(path)).content,
+        (progressEstimate) => (this.progressEstimate = 50 + 0.5 * progressEstimate),
       )
 
       rescheduleNotifications(newCache.cachedAgenda).then()
